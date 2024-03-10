@@ -30,7 +30,20 @@
                 <li><a href="gallery.html" target="_self">Gallery</a></li>
                 <li><a href="shop.html" target="_self">Shop</a></li>
             </ul>
+
+            <div class="dropdown-menu">
+                <li><a href="index.html" target="_self">Home</a></li>
+                <li><a href="about.html" target="_self">About</a></li>
+                <li><a href="gallery.html" target="_self">Gallery</a></li>
+                <li><a href="shop.html" target="_self">Shop</a></li>
+            </div>
+            <div class="bx1-shopping-bag">
             <i class="bx bx-shopping-bag" id="cart-icon"></i>
+        </div>
+            <div class="toggle-button">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+           
             <div class="cart">
                 <h2 class="cart-title">Giỏ hàng</h2>
                 <!-- cart content -->
@@ -40,7 +53,7 @@
                 <!-- total -->
                 <div class="total">
                     <div class="total-title">Tổng</div>
-                    <div class="total-price">100k</div>
+                    <div class="total-price">0k</div>
                 </div>
                 <!-- Buy button -->
                 <button type="Button" class="btn-buy">Mua ngay</button>
@@ -50,6 +63,19 @@
        </div>
 
     </header>
+
+    <script>
+        const toggleButton = document.querySelector('.toggle-button');
+        const toggleButtonIcon = document.querySelector('.toggle-button i');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+
+        toggleButton.onclick = function() {
+            dropdownMenu.classList.toggle('open');
+            const isOpen = dropdownMenu.classList.contains('open');
+
+            toggleButtonIcon.classList = isOpen ? "fa-solid fa-xmark" : "fa-solid fa-bars";
+        }
+    </script>
 
     <main>
         <section class="shop container">
