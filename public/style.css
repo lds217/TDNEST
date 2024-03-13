@@ -181,6 +181,8 @@ header li a:hover::before {
     margin-bottom: 0.5rem;
 }
 
+
+
 .price{
     font-weight: 500;
 }
@@ -252,7 +254,9 @@ header li a:hover::before {
 .cart-product-title{
     font-size: 1rem;
     text-transform: uppercase;
+  
 }
+
 
 .cart-price{
     font-weight: 500;
@@ -377,6 +381,12 @@ header li a:hover::before {
         box-shadow: 0 1px 4px hsl(0 4% 15%/10%);
         z-index: 100;
     }
+    
+    .navbar .logo a {
+      font-size: 1rem;
+      font-weight: bold;
+  }
+  
     .info{
         font-size: 40%;
         position: absolute;
