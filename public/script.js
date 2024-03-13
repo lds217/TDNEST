@@ -1,5 +1,70 @@
+// const dataList = document.getElementById('data-list');
+// const dataForm = document.getElementById('data-form');
+// const dataId = document.getElementById('data-id');
+// const dataValue = document.getElementById('data-value');
 
-import {Add} from '/firebase.js'
+// // Fetch and display data
+// async function fetchData() {
+//   try {
+//     const response = await axios.get('/api/data');
+//     const data = response.data;
+//     dataList.innerHTML = '';
+//     data.forEach(item => {
+//       const li = document.createElement('li');
+//       li.textContent = item.value;
+//       const deleteBtn = document.createElement('button');
+//       deleteBtn.textContent = 'Delete';
+//       deleteBtn.addEventListener('click', () => deleteData(item.id));
+//       const editBtn = document.createElement('button');
+//       editBtn.textContent = 'Edit';
+//       editBtn.addEventListener('click', () => editData(item.id, item.value));
+//       li.appendChild(deleteBtn);
+//       li.appendChild(editBtn);
+//       dataList.appendChild(li);
+//     });
+//   } catch (error) {
+//     console.error('Error fetching data:', error);
+//   }
+// }
+
+// Create or update data
+async function saveData() {
+  event.preventDefault();
+  const id =123;
+  const value = 1552;
+  if (value) {
+    try {
+       
+      await axios.post('/api/data', { id, value });
+
+    } catch (error) {
+      console.log("bye");
+      console.error('Error saving data:', error);
+    }
+  }
+}
+
+// // Delete data
+// async function deleteData(id) {
+//   try {
+//     await axios.delete(`/api/data/${id}`);
+//     await fetchData();
+//   } catch (error) {
+//     console.error('Error deleting data:', error);
+//   }
+// }
+
+// // Edit data
+// function editData(id, value) {
+//   dataId.value = id;
+//   dataValue.value = value;
+// }
+
+// // Initialize
+// fetchData();
+// dataForm.addEventListener('submit', saveData);
+
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -69,6 +134,8 @@ function ready(){
 var Email;
 
 // buy button 
+
+
 function buyButtonClicked(event)
 {
     updatetotal();
@@ -96,15 +163,14 @@ function buyButtonClicked(event)
     notification();
     
 }
-
-
+//import {Add} from './firestore.js'
 async function notification()
 {
     
     const {value : Email} = await Swal.fire({
-        input: "email",
-        inputLabel: "Địa chỉ Email",
-        inputPlaceholder: "Nhập địa chỉ email của bạn"
+        input: "text",
+        inputLabel: "Họ và tên",
+        inputPlaceholder: "Nhập tên của bạn (sản phẩm demo)"
       });
       if (Email) {
         Swal.fire(`${Email}`);
@@ -124,7 +190,12 @@ async function notification()
             title: "Đặt hàng thành công!"
           });
         var cartItems =  localStorage.getItem('cartItems');
-            Add(cartItems,total,Email);
+        if (Email) {
+
+        // Add(Email,cartItems,total);
+          saveData();
+          
+        }
         
             saveCartItems();
     updatetotal();
@@ -255,8 +326,3 @@ function updatetotal()
     }
     document.getElementsByClassName("total-price")[0].innerText= total + "k";
 }
-
-
-
-
-  

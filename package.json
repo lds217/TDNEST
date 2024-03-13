@@ -1,0 +1,23 @@
+{
+  "name": "tdnest",
+  "version": "0.0.1",
+  "description": "Just a demo.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.3",
+    "firebase-admin": "^12.0.0",
+    "sweetalert2": "^11.10.6",
+    "firestore": "^1.1.6",
+    "axios": "^0.28.0"
+  },
+  "engines": {
+    "node": "16.x"
+  },
+  "repository": {
+    "url": "https://glitch.com/edit/#!/client-server-for-lds"
+  },
+  "license": "MIT"
+}

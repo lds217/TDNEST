@@ -1,3 +1,20 @@
+<!-- <!DOCTYPE html>
+<html>
+  <head>
+    <title>Firestore CRUD</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <h1>Firestore CRUD</h1>
+    <ul id="data-list"></ul>
+    <form id="data-form">
+      <input type="hidden" id="data-id" />
+      <input type="text" id="data-value" placeholder="Enter data" />
+      <button type="submit">Save</button>
+    </form>
+    <script src="script.js"></script>
+  </body>
+</html> -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,7 +28,8 @@
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="Images/favicon.ico" rel="icon" type="image/x-icon">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>  
     <base target="_blank">
     <title>Thanh Đặng Web</title>
 </head>
@@ -84,43 +102,43 @@
             </h2>
             <div class="shop-content">
                 <div class="product-box">
-                    <img src="img/product1.jpeg" alt="" class="product-img">
+                    <img src="https://cdn.glitch.global/6bafa110-7d09-438f-94a0-f882a483c342/product1.jpeg?v=1710313286410" alt="" class="product-img">
                     <h2 class="product-title">Yến sào</h2>
                     <span class="price">100k</span>
                     <i class="bx bx-shopping-bag add-cart"></i>
                 </div>
                 <div class="product-box">
-                    <img src="img/product2.jpeg" alt="" class="product-img">
+                    <img src="https://cdn.glitch.global/6bafa110-7d09-438f-94a0-f882a483c342/product2.jpeg?v=1710313255782" alt="" class="product-img">
                     <h2 class="product-title">Yến sào hơi vip</h2>
                     <span class="price">160k</span>
                     <i class="bx bx-shopping-bag add-cart"></i>
                 </div>
                 <div class="product-box">
-                    <img src="img/product3.jpeg" alt="" class="product-img">
+                    <img src="https://cdn.glitch.global/6bafa110-7d09-438f-94a0-f882a483c342/product3.jpeg?v=1710313260941" alt="" class="product-img">
                     <h2 class="product-title">Yến sào vip</h2>
                     <span class="price">520k</span>
                     <i class="bx bx-shopping-bag add-cart"></i>
                 </div>
                 <div class="product-box">
-                    <img src="img/product4.jpeg" alt="" class="product-img">
+                    <img src="https://cdn.glitch.global/6bafa110-7d09-438f-94a0-f882a483c342/product4.jpeg?v=1710313264090" alt="" class="product-img">
                     <h2 class="product-title">Yến sào đẳng cấp</h2>
                     <span class="price">700k</span>
                     <i class="bx bx-shopping-bag add-cart"></i>
                 </div>
                 <div class="product-box">
-                    <img src="img/product1.jpeg" alt="" class="product-img">
+                    <img src="https://cdn.glitch.global/6bafa110-7d09-438f-94a0-f882a483c342/product1.jpeg?v=1710313286410" alt="" class="product-img">
                     <h2 class="product-title">Yến sào</h2>
                     <span class="price">100k</span>
                     <i class="bx bx-shopping-bag add-cart"></i>
                 </div>
                 <div class="product-box">
-                    <img src="img/product1.jpeg" alt="" class="product-img">
+                    <img src="https://cdn.glitch.global/6bafa110-7d09-438f-94a0-f882a483c342/product1.jpeg?v=1710313286410" alt="" class="product-img">
                     <h2 class="product-title">Yến sào</h2>
                     <span class="price">100k</span>
                     <i class="bx bx-shopping-bag add-cart"></i>
                 </div>
                 <div class="product-box">
-                    <img src="img/product1.jpeg" alt="" class="product-img">
+                    <img src="https://cdn.glitch.global/6bafa110-7d09-438f-94a0-f882a483c342/product1.jpeg?v=1710313286410" alt="" class="product-img">
                     <h2 class="product-title">Yến sào</h2>
                     <span class="price">100k</span>
                     <i class="bx bx-shopping-bag add-cart"></i>
@@ -157,14 +175,13 @@
                 </div>
             </div>
         </section>
+      <input type="hidden" id="data-id" />
+      <button type="submit">Save</button>
     </main>
     <section>
         <!-- link to js -->
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js" type="module" ></script>
-        <script  src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js" type="module"></script>
-        <script src="firebase.js" type="module"></script>
-        <script src="shop.js" type="module"></script>
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      <script src="script.js" ></script>
         
     </section>
 </body>
