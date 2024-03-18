@@ -73,19 +73,19 @@ async function saveData() {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Cart
-let cartIcon = document.querySelector('#cart-icon')
-let cart = document.querySelector('.cart')
-let closeCart = document.querySelector('#close-cart')
+// let cartIcon = document.querySelector('#cart-icon')
+// let cart = document.querySelector('.cart')
+// let closeCart = document.querySelector('#close-cart')
 // open cart
-cartIcon.onclick = () =>{
-    cart.classList.add('active');
-};
+// cartIcon.onclick = () =>{
+//     cart.classList.add('active');
+// };
 
 
 // close cart
-closeCart.onclick = () =>{
-    cart.classList.remove('active');
-};
+// closeCart.onclick = () =>{
+//     cart.classList.remove('active');
+// };
 //cart working
 if(document.readyState == "loading"){
     document.addEventListener("DOMContentLoaded",ready);
@@ -122,17 +122,6 @@ function ready(){
         input.addEventListener("change", quantityChanged);
     }
     console.log(total);
-    //Add to cart
-    var addCart = document.getElementsByClassName('add-cart');
-    for(var i =0; i < addCart.length; i++)
-    {
-        var button = addCart[i];
-        button.addEventListener('click', addCartClicked);
-
-    }
-    console.log(total);
-    // buy button
-    document.getElementsByClassName('btn-buy')[0].addEventListener('click',buyButtonClicked);
 }
 
 
@@ -140,51 +129,73 @@ function ready(){
 // buy button 
 
 
-function buyButtonClicked(event)
-{
-    window.location.href = "https://tdnests.glitch.me/checkout.html";
-    
-}
-//import {Add} from './firestore.js'
-async function notification()
-{
-    
-    Email = await Swal.fire({
-        input: "text",
-        inputLabel: "Họ và tên",
-        inputPlaceholder: "Nhập tên của bạn (sản phẩm demo)"
-      });
-      if (Email) {
-        Swal.fire(`${Email}`);
-        const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.onmouseenter = Swal.stopTimer;
-              toast.onmouseleave = Swal.resumeTimer;
-            }
-          });
-          Toast.fire({
-            icon: "success",
-            title: "Đặt hàng thành công!"
-          });
-        
-        if (Email) {
+// function buyButtonClicked(event)
+// {
+//     updatetotal();
+//     console.log(total);
+//     if(total == 0)
+//     {
+//         alert("Giỏ hàng đang trống");
+//         return;
+//     }
+//     var cartContent = document.getElementsByClassName('cart-content')[0];
+//     var cartItemsNames = document.getElementsByClassName('cart-product-title');
+//     var cartItemsPrices = document.getElementsByClassName('cart-price');
+//     var cartItemsQuantity= document.getElementsByClassName('cart-quantity');
+//     var alertMsg = "";
+//     for(var i = 0; i< cartItemsNames.length;i++)
+//         alertMsg += cartItemsNames[i].innerText +" " + cartItemsPrices[i].innerText+ " "+ cartItemsQuantity[i].value+"\n";  
+//     while(cartContent.hasChildNodes())
+//     {
+//         cartContent.removeChild(cartContent.firstChild);
+//     }
+//     alert("BẠN VỪA MỚI MUA\n" + alertMsg);
+//     console.log(alertMsg);
 
-        // Add(Email,cartItems,total);
-          saveData();
-          
-        }
+    
+//     notification();
+    
+// }
+//import {Add} from './firestore.js'
+// async function notification()
+// {
+    
+//     Email = await Swal.fire({
+//         input: "text",
+//         inputLabel: "Họ và tên",
+//         inputPlaceholder: "Nhập tên của bạn (sản phẩm demo)"
+//       });
+//       if (Email) {
+//         Swal.fire(`${Email}`);
+//         const Toast = Swal.mixin({
+//             toast: true,
+//             position: "top-end",
+//             showConfirmButton: false,
+//             timer: 3000,
+//             timerProgressBar: true,
+//             didOpen: (toast) => {
+//               toast.onmouseenter = Swal.stopTimer;
+//               toast.onmouseleave = Swal.resumeTimer;
+//             }
+//           });
+//           Toast.fire({
+//             icon: "success",
+//             title: "Đặt hàng thành công!"
+//           });
         
-            saveCartItems();
-    updatetotal();
+//         if (Email) {
+
+//         // Add(Email,cartItems,total);
+//           saveData();
+          
+//         }
+        
+//             saveCartItems();
+//     updatetotal();
  
-    } 
+//     } 
    
-}
+// }
 
 function quantityChanged(event)
 {
@@ -196,17 +207,6 @@ function quantityChanged(event)
     saveCartItems();
 }
 
-function addCartClicked(event)
-{
-    var button = event.target;
-    var shopProducts = button.parentElement;
-    var title = shopProducts.getElementsByClassName('product-title')[0].innerText;
-    var price = shopProducts.getElementsByClassName('price')[0].innerText;
-    var productImg = shopProducts.getElementsByClassName('product-img')[0].src;
-    console.log(title, price, productImg);
-    addProductToCart(title, price,productImg);
-    saveCartItems();
-}
 
 function saveCartItems(){
     var cartContent = document.getElementsByClassName('cart-content')[0];
