@@ -218,10 +218,20 @@ header li a:hover::before {
     background: var(--bg-color);
     box-shadow: -2px 0 4px hsl(0 4% 15%/ 10%);
     transition: 0.4s;
+    
+}
+
+.cartCheckout{
+   
+    
 }
 
 .cart.active{
+  height: 100%;
+   margin: 0em;
     right:0;
+    overflow-y: auto;
+/*   overflow-x: auto; */
 }
 
 .cart-title{
@@ -256,7 +266,6 @@ header li a:hover::before {
     text-transform: uppercase;
   
 }
-
 
 .cart-price{
     font-weight: 500;
@@ -297,7 +306,7 @@ header li a:hover::before {
     margin: 1.5rem auto 0 auto;
     padding: 12px 20px;
     border: none;
-    background: var(--main-color);
+    background: #a64c32;
     color: var(--bg-color);
     font-size: 1rem;
     font-weight: 500;
@@ -350,6 +359,56 @@ header li a:hover::before {
     justify-content: center;
 }
 
+/* Checkout */
+.checkoutLayout{
+    display: grid;
+    margin-top: 150px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 50px;
+    padding: 20px;
+    
+}
+.checkoutLayout .right{
+    background-color: #be7a65;
+    border-radius: 20px;
+    padding: 40px;
+    color: #fff;
+}
+.checkoutLayout .right .form{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    border-bottom: 1px solid #7a7fe2;
+    padding-bottom: 20px;
+}
+.checkoutLayout .form h1,
+.checkoutLayout .form .group:nth-child(-n+3){
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+.checkoutLayout .form input, 
+.checkoutLayout .form select
+{
+    width: 100%;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    border-radius: 20px;
+    margin-top: 10px;
+    border:none;
+    background-color: ;
+    color: black;
+}
+.checkoutLayout .right .return .row{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+.checkoutLayout .right .return .row div:nth-child(2){
+    font-weight: bold;
+    font-size: x-large;
+}
+
 /* RESPONSIVE DESIGN  */
 @media(max-width: 1080px) {
     .navbar .links, .navbar .action-button {
@@ -391,6 +450,9 @@ header li a:hover::before {
         font-size: 40%;
         position: absolute;
     }
+  .checkoutLayout{
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
 
 
@@ -400,6 +462,8 @@ header li a:hover::before {
         width: unset;
     }
 }
+
+
 
 
 
