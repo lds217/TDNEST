@@ -1,45 +1,49 @@
-// const dataList = document.getElementById('data-list');
-// const dataForm = document.getElementById('data-form');
-// const dataId = document.getElementById('data-id');
-// const dataValue = document.getElementById('data-value');
 
-// // Fetch and display data
-// async function fetchData() {
-//   try {
-//     const response = await axios.get('/api/data');
-//     const data = response.data;
-//     dataList.innerHTML = '';
-//     data.forEach(item => {
-//       const li = document.createElement('li');
-//       li.textContent = item.value;
-//       const deleteBtn = document.createElement('button');
-//       deleteBtn.textContent = 'Delete';
-//       deleteBtn.addEventListener('click', () => deleteData(item.id));
-//       const editBtn = document.createElement('button');
-//       editBtn.textContent = 'Edit';
-//       editBtn.addEventListener('click', () => editData(item.id, item.value));
-//       li.appendChild(deleteBtn);
-//       li.appendChild(editBtn);
-//       dataList.appendChild(li);
-//     });
-//   } catch (error) {
-//     console.error('Error fetching data:', error);
-//   }
-// }
-var Email;
+
+var Name;
+var number;
+ var address;
+var datetime;
 // Create or update data
 async function saveData() {
   var cartItems =  localStorage.getItem('cartItems');
   cartItems = JSON.parse(cartItems);
   console.log(cartItems);
-  var recieve=[];
-  event.preventDefault();
-  var value=[];
-  Email =Email.value;
   if (cartItems) {
     try {
-       
-      await axios.post('/api/data' , { Email, cartItems, total });
+       // post firebase
+      await axios.post('/api/data' , { Name, number, address, datetime, cartItems, total });
+      // post calendar (not working)
+      // await axios.post('/api/add-event' , {
+      //   'summary': 'This is the summary.',
+      //   'description': 'This is the description.',
+      //   'start': {
+      //       'dateTime': '2024-03-20T09:00:00-07:00',
+      //       'timeZone': 'Asia/Ho_Chi_Minh'
+      //   },
+      //   'end': {
+      //       'dateTime': '2024-03-29T09:00:00-07:00',
+      //       'timeZone': 'Asia/Ho_Chi_Minh'
+      //   }
+      // });
+      
+      ////
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        }
+      });
+      Toast.fire({
+        icon: "success",
+        title: "Đặt hàng thành công!"
+      });
+      
 
     } catch (error) {
       console.log("bye");
@@ -48,45 +52,6 @@ async function saveData() {
   }
 }
 
-// // Delete data
-// async function deleteData(id) {
-//   try {
-//     await axios.delete(`/api/data/${id}`);
-//     await fetchData();
-//   } catch (error) {
-//     console.error('Error deleting data:', error);
-//   }
-// }
-
-// // Edit data
-// function editData(id, value) {
-//   dataId.value = id;
-//   dataValue.value = value;
-// }
-
-// // Initialize
-// fetchData();
-// dataForm.addEventListener('submit', saveData);
-
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-//Cart
-// let cartIcon = document.querySelector('#cart-icon')
-// let cart = document.querySelector('.cart')
-// let closeCart = document.querySelector('#close-cart')
-// open cart
-// cartIcon.onclick = () =>{
-//     cart.classList.add('active');
-// };
-
-
-// close cart
-// closeCart.onclick = () =>{
-//     cart.classList.remove('active');
-// };
-//cart working
 if(document.readyState == "loading"){
     document.addEventListener("DOMContentLoaded",ready);
 }
@@ -122,6 +87,8 @@ function ready(){
         input.addEventListener("change", quantityChanged);
     }
     console.log(total);
+
+    document.getElementsByClassName('btn-buy')[0].addEventListener('click',buyButtonClicked);
 }
 
 
@@ -129,73 +96,53 @@ function ready(){
 // buy button 
 
 
-// function buyButtonClicked(event)
-// {
-//     updatetotal();
-//     console.log(total);
-//     if(total == 0)
-//     {
-//         alert("Giỏ hàng đang trống");
-//         return;
-//     }
-//     var cartContent = document.getElementsByClassName('cart-content')[0];
-//     var cartItemsNames = document.getElementsByClassName('cart-product-title');
-//     var cartItemsPrices = document.getElementsByClassName('cart-price');
-//     var cartItemsQuantity= document.getElementsByClassName('cart-quantity');
-//     var alertMsg = "";
-//     for(var i = 0; i< cartItemsNames.length;i++)
-//         alertMsg += cartItemsNames[i].innerText +" " + cartItemsPrices[i].innerText+ " "+ cartItemsQuantity[i].value+"\n";  
-//     while(cartContent.hasChildNodes())
-//     {
-//         cartContent.removeChild(cartContent.firstChild);
-//     }
-//     alert("BẠN VỪA MỚI MUA\n" + alertMsg);
-//     console.log(alertMsg);
+function buyButtonClicked(event)
+{
+    Name = document.getElementById("name").value;
+    number = document.getElementById("phone").value;
+    address = document.getElementById("address").value;
+    datetime = document.getElementById("deliveryTime").value;
+    var cool= document.getElementById("cool").value;
+    var notcool= document.getElementById("notcool").value;
+    updatetotal();
+    if(total == 0)
+    {
+        Swal.fire({
+            title: "Vỏ hàng trống",
+            text: "Vui lòng quay lại để chọn hàng",
+            icon: "error"
+          });
+        return;
+    }
+    if(cool || notcool){
+      console.log("rgigjr");
+      return;
+    }
+    if(!Name || !number || !address || !datetime)
+    {
+        Swal.fire({
+            title: "Thiếu thông tin",
+            text: "Vui lòng nhâp lại",
+            icon: "error"
+          });
+        return;
+    }
+    
+    var cartContent = document.getElementsByClassName('cart-content')[0];
+    var cartItemsNames = document.getElementsByClassName('cart-product-title');
+    var cartItemsPrices = document.getElementsByClassName('cart-price');
+    var cartItemsQuantity= document.getElementsByClassName('cart-quantity');
+    var alertMsg = "";
+    for(var i = 0; i< cartItemsNames.length;i++)
+        alertMsg += cartItemsNames[i].innerText +" " + cartItemsPrices[i].innerText+ " "+ cartItemsQuantity[i].value+"\n";  
+    while(cartContent.hasChildNodes())
+    {
+        cartContent.removeChild(cartContent.firstChild);
+    }
+    saveData();
+    saveCartItems();
+}
 
-    
-//     notification();
-    
-// }
-//import {Add} from './firestore.js'
-// async function notification()
-// {
-    
-//     Email = await Swal.fire({
-//         input: "text",
-//         inputLabel: "Họ và tên",
-//         inputPlaceholder: "Nhập tên của bạn (sản phẩm demo)"
-//       });
-//       if (Email) {
-//         Swal.fire(`${Email}`);
-//         const Toast = Swal.mixin({
-//             toast: true,
-//             position: "top-end",
-//             showConfirmButton: false,
-//             timer: 3000,
-//             timerProgressBar: true,
-//             didOpen: (toast) => {
-//               toast.onmouseenter = Swal.stopTimer;
-//               toast.onmouseleave = Swal.resumeTimer;
-//             }
-//           });
-//           Toast.fire({
-//             icon: "success",
-//             title: "Đặt hàng thành công!"
-//           });
-        
-//         if (Email) {
-
-//         // Add(Email,cartItems,total);
-//           saveData();
-          
-//         }
-        
-//             saveCartItems();
-//     updatetotal();
- 
-//     } 
-   
-// }
 
 function quantityChanged(event)
 {
@@ -297,6 +244,7 @@ function updatetotal()
     var cartContent = document.getElementsByClassName("cart-content")[0];
     var cartBoxes = cartContent.getElementsByClassName("cart-box");
     total = 0;
+    var Quantity = 0;
     for(var i = 0; i< cartBoxes.length; i++)
     {
         var cartBox = cartBoxes[i];
@@ -304,7 +252,9 @@ function updatetotal()
         var quantityElement = cartBox.getElementsByClassName("cart-quantity")[0];
         var price= parseFloat(priceElement.innerText.replace("k", ""));
         var quantity = quantityElement.value;
+        Quantity += parseInt(quantity);
         total = total + price * quantity;
     }
+    document.getElementsByClassName("totalQuantity")[0].innerText= Quantity;
     document.getElementsByClassName("total-price")[0].innerText= total + "k";
 }

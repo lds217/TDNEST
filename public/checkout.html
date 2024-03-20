@@ -77,18 +77,23 @@
     </script>
 
     <main>
+        
         <section class="checkoutLayout">
-           
+          
             <div class="cartCheckout">
-                <h2 class="cart-title">Giỏ hàng</h2>
+               <h2 class="shop-title">
+                GIỎ HÀNG
+              </h2>
                 <!-- cart content -->
                 <div class="cart-content">
                            
                 </div>
             </div>
            <div class="right">
-              
-
+              <h2 class="shop-title">
+                THÔNG TIN KHÁCH HÀNG
+              </h2>
+             <input type="text" id="cool" class="hiho">
               <div class="form">
                   <div class="group">
                       <label for="name">Họ và tên</label>
@@ -101,38 +106,32 @@
                   </div>
 
                   <div class="group">
-                      <label for="address">Đia chỉ</label>
+                      <label for="address">Địa chỉ</label>
                       <input type="text" name="address" id="address">
                   </div>
-
-                  <div class="group">
-                      <label for="country">Country</label>
-                      <select name="country" id="country">
-                          <option value="">Choose..</option>
-                          <option value="">Kingdom</option>
-                      </select>
-                  </div>
-
-                  <div class="group">
-                      <label for="city">City</label>
-                      <select name="city" id="city">
-                          <option value="">Choose..</option>
-                          <option value="">London</option>
-                      </select>
-                  </div>
+                   <input type="text" id="notcool" class="hihi">
+               
+                  <form action="/action_page.php">
+                    <label for="deliveryTime">Thời gian giao hàng(*)</label>
+                    <input type="datetime-local" id="deliveryTime" name="deliveryTime">
+                  </form>
               </div>
               <div class="return">
                   <div class="row">
-                      <div>Total Quantity</div>
+                      <div>Tổng số lượng</div>
                       <div class="totalQuantity">70</div>
                   </div>
                   <div class="row">
-                      <div>Total Price</div>
+                      <div>Tổng tiền</div>
                       <div class="total-price">$900</div>
                   </div>
               </div>
-              <button class="btn-buy">CHECKOUT</button>
+              <button class="btn-buy">Đặt hàng</button>
+              <div class="caption">
+                <p>(*)Thời gian giao hàng sẽ được trao đổi lại khi gọi xác nhận đơn</p>
+                </div>
             </div>
+            
         </section>
       <input type="hidden" id="data-id" />
     </main>

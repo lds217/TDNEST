@@ -1,31 +1,4 @@
-// const dataList = document.getElementById('data-list');
-// const dataForm = document.getElementById('data-form');
-// const dataId = document.getElementById('data-id');
-// const dataValue = document.getElementById('data-value');
 
-// // Fetch and display data
-// async function fetchData() {
-//   try {
-//     const response = await axios.get('/api/data');
-//     const data = response.data;
-//     dataList.innerHTML = '';
-//     data.forEach(item => {
-//       const li = document.createElement('li');
-//       li.textContent = item.value;
-//       const deleteBtn = document.createElement('button');
-//       deleteBtn.textContent = 'Delete';
-//       deleteBtn.addEventListener('click', () => deleteData(item.id));
-//       const editBtn = document.createElement('button');
-//       editBtn.textContent = 'Edit';
-//       editBtn.addEventListener('click', () => editData(item.id, item.value));
-//       li.appendChild(deleteBtn);
-//       li.appendChild(editBtn);
-//       dataList.appendChild(li);
-//     });
-//   } catch (error) {
-//     console.error('Error fetching data:', error);
-//   }
-// }
 var Email;
 // Create or update data
 async function saveData() {
@@ -47,27 +20,6 @@ async function saveData() {
     }
   }
 }
-
-// // Delete data
-// async function deleteData(id) {
-//   try {
-//     await axios.delete(`/api/data/${id}`);
-//     await fetchData();
-//   } catch (error) {
-//     console.error('Error deleting data:', error);
-//   }
-// }
-
-// // Edit data
-// function editData(id, value) {
-//   dataId.value = id;
-//   dataValue.value = value;
-// }
-
-// // Initialize
-// fetchData();
-// dataForm.addEventListener('submit', saveData);
-
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -142,49 +94,20 @@ function ready(){
 
 function buyButtonClicked(event)
 {
-    window.location.href = "https://tdnests.glitch.me/checkout.html";
+    if(total==0)
+      {
+         Swal.fire({
+            title: "Vỏ hàng trống",
+            text: "Vui lòng quay lại để chọn hàng",
+            icon: "error"
+          });
+        return;
+      }
+    window.location.href = window.location.href+"checkout.html";
     
 }
 //import {Add} from './firestore.js'
-async function notification()
-{
-    
-    Email = await Swal.fire({
-        input: "text",
-        inputLabel: "Họ và tên",
-        inputPlaceholder: "Nhập tên của bạn (sản phẩm demo)"
-      });
-      if (Email) {
-        Swal.fire(`${Email}`);
-        const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.onmouseenter = Swal.stopTimer;
-              toast.onmouseleave = Swal.resumeTimer;
-            }
-          });
-          Toast.fire({
-            icon: "success",
-            title: "Đặt hàng thành công!"
-          });
-        
-        if (Email) {
 
-        // Add(Email,cartItems,total);
-          saveData();
-          
-        }
-        
-            saveCartItems();
-    updatetotal();
- 
-    } 
-   
-}
 
 function quantityChanged(event)
 {
