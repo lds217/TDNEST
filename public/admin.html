@@ -1,23 +1,4 @@
-<!-- <!DOCTYPE html>
-<html>
-  <head>
-    <title>Firestore CRUD</title>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  </head>
-  <body>
-    <h1>Firestore CRUD</h1>
-    <ul id="data-list"></ul>
-    <form id="data-form">
-      <input type="hidden" id="data-id" />
-      <input type="text" id="data-value" placeholder="Enter data" />
-      <button type="submit">Save</button>
-    </form>
-    <script src="script.js"></script>
-  </body>
-</html> -->
 <!DOCTYPE html>
-<html lang="en">
-
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -56,12 +37,12 @@
                 <li><a href="shop.html" target="_self">Shop</a></li>
             </div>
           
-          <div class="toggle-button">
+            <div class="toggle-button">
                 <i class="fa-solid fa-bars"></i>
             </div>
-           
-          </div>      
-      </header>
+       </div>
+
+    </header>
 
     <script>
         const toggleButton = document.querySelector('.toggle-button');
@@ -75,70 +56,56 @@
             toggleButtonIcon.classList = isOpen ? "fa-solid fa-xmark" : "fa-solid fa-bars";
         }
     </script>
-
+  
     <main>
+        <section class="shop container"> 
         
-        <section class="checkoutLayout">
-          
-            <div class="cartCheckout">
-               <h2 class="shop-title">
-                GIỎ HÀNG
-              </h2>
-                <!-- cart content -->
-                <div class="cart-content">
-                           
-                </div>
-            </div>
-           <div class="right">
-              <h2 class="shop-title">
-                THÔNG TIN KHÁCH HÀNG
-              </h2>
-             <input type="text" id="cool" class="hiho">
-              <div class="form">
+          <div class="form">
                   <div class="group">
-                      <label for="name">Họ và tên</label>
+                      <label for="name">Tài khoản</label>
                       <input type="text" name="name" id="name">
                   </div>
 
                   <div class="group">
-                      <label for="phone">Số điện thoại</label>
-                      <input type="text" name="phone" id="phone">
-                  </div>
-
-                  <div class="group">
-                      <label for="address">Địa chỉ</label>
-                      <input type="text" name="address" id="address">
+                      <label for="phone">Mật khẩu</label>
+                       <input type="password" id="pwd" name="pwd" minlength="8">
                   </div>
                    <input type="text" id="notcool" class="hihi">
                
                   <form action="/action_page.php">
-                    <label for="deliveryTime">Thời gian giao hàng(*)</label>
+                    <label for="deliveryTime">Thời gian bắt đầu</label>
+                    <input type="datetime-local" id="deliveryTime" name="deliveryTime">
+                  </form>
+                  <form action="/action_page.php">
+                    <label for="deliveryTime">Thời gian kết thúc</label>
                     <input type="datetime-local" id="deliveryTime" name="deliveryTime">
                   </form>
               </div>
-              <div class="return">
-                  <div class="row">
-                      <div>Tổng số lượng</div>
-                      <div class="totalQuantity">70</div>
-                  </div>
-                  <div class="row">
-                      <div>Tổng tiền</div>
-                      <div class="total-price">$900</div>
-                  </div>
-              </div>
-              <button class="btn-buy">Đặt hàng</button>
-              <div class="caption">
-                <p>(*)Thời gian giao hàng sẽ được trao đổi lại khi gọi xác nhận đơn</p>
-                </div>
+              <section class="checkoutLayout">
+                <button class="btn-today">Đơn hàng hôm nay</button>
+                <button class="btn-custom">Đơn hàng yêu cầu</button>
+            </section>
+        <section class="checkoutLayout">
+          
+            <div class="cartCheckout">
+            </div>
+           <div class="right">
+             
+              <h2 class="shop-title">
+                ĐƠN HÀNG HÔM NAY
+              </h2>
+               <div class="orders">
+
+               </div>
             </div>
             
         </section>
-      <input type="hidden" id="data-id" />
+      </section>   
     </main>
     <section>
         <!-- link to js -->
       <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-      <script src="checkout.js" ></script>
+      <script src="admin.js" ></script>
         
     </section>
 </body>

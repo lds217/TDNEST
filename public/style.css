@@ -8,8 +8,8 @@
 }
 
 :root{
-    --main-color: red;
-    --text-color: black;
+    --main-color:  #be7a65;
+    --text-color: #a64c32;
     --bg-color: white;
 }
 
@@ -181,7 +181,15 @@ header li a:hover::before {
     margin-bottom: 0.5rem;
 }
 
+.hihi{
+  display:none;
+  visibility:hidden;
+}
 
+.hiho{
+  display:none;
+  visibility:hidden;
+}
 
 .price{
     font-weight: 500;
@@ -256,6 +264,13 @@ header li a:hover::before {
     padding: 10px;
 }
 
+.checkoutLayout .cart-img{
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    padding: 10px;
+}
+
 .detail-box{
     display: grid;
     row-gap: 0.5rem;
@@ -304,6 +319,7 @@ header li a:hover::before {
 .btn-buy{
     display:flex;
     margin: 1.5rem auto 0 auto;
+    border-radius: 10px;
     padding: 12px 20px;
     border: none;
     background: #a64c32;
@@ -314,7 +330,7 @@ header li a:hover::before {
 }
 
 .btn-buy:hover{
-    background: var(--text-color);
+    background: #e08814;
 }
 
 #close-cart{
@@ -406,7 +422,7 @@ header li a:hover::before {
 }
 .checkoutLayout .right .return .row div:nth-child(2){
     font-weight: bold;
-    font-size: x-large;
+    font-size: 200%;
 }
 
 /* RESPONSIVE DESIGN  */
@@ -461,6 +477,15 @@ header li a:hover::before {
         left: 2rem;
         width: unset;
     }
+}
+
+.caption{
+    padding-top: 10px;
+}
+
+.checkoutLayout .cart-content .cart-box{
+    border: 2px solid #be7a65;
+    border-radius: 10px;
 }
 
 
