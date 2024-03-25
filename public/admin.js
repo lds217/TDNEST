@@ -39,46 +39,6 @@ function convert(date){
 //////////////////////////////////////////////////
 
 
-// Create or update data
-async function saveData() {
-  var cartItems =  localStorage.getItem('cartItems');
-  cartItems = JSON.parse(cartItems);
-  console.log(cartItems);
-  var uid = number+uuidv4();
-  if (cartItems) {
-       // post firebase
-      await axios.post('/api/data' , { Name, number, address, datetime, cartItems, total, uid });
-      // post calendar
-      let date = new Date(datetime);
-      let startDate = date.toISOString();
-      datetime = date.getTime() + 30 * 60 * 1000;
-      date = new Date(datetime);
-      let endDate = date.toISOString();
-      console.log(startDate,endDate);
-      ///////////////////////////////////////
-      await axios.post('/api/add-event' , { Name, number, address, datetime, cartItems, total, uid, startDate,endDate });
-      console.log("hii");
-      const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.onmouseenter = Swal.stopTimer;
-          toast.onmouseleave = Swal.resumeTimer;
-        }
-      });
-      
-      Toast.fire({
-        icon: "success",
-        title: "Đặt hàng thành công!"
-      });
-    }
-  }
-
-
-
 if(document.readyState == "loading"){
     document.addEventListener("DOMContentLoaded",ready);
 }
@@ -89,32 +49,7 @@ else
 
 
 function ready(){
-
-    //reload from local storage
-    //localStorage.clear();
-    if(localStorage["cartItems"]){
-        console.log("co rui");
-        loadCartItems();
-        updatetotal();
-        console.log(total);
-    }
-
-    // remove Items from cart
-    var removeCartButtons = document.getElementsByClassName('cart-remove');
-    console.log(total);
-    for(var i =0; i < removeCartButtons.length; i++){
-        var button = removeCartButtons[i];
-        button.addEventListener("click", removeCartItem);
-    }
-    //Quantity change
-    var quantityInputs = document.getElementsByClassName('cart-quantity');
-    for(var i =0; i < quantityInputs.length; i++){
-        var input = quantityInputs[i];
-        input.addEventListener("change", quantityChanged);
-    }
-    console.log(total);
-
-    document.getElementsByClassName('btn-buy')[0].addEventListener('click',buyButtonClicked);
+    document.getElementsByClassName('btn-today')[0].addEventListener('click',buyButtonClicked);
 }
 
 
@@ -122,63 +57,36 @@ function ready(){
 // buy button 
 
 
-function buyButtonClicked(event)
+async function buyButtonClicked(event)
 {
-    Name = document.getElementById("name").value;
-    number = document.getElementById("phone").value;
-    address = document.getElementById("address").value;
-    datetime = document.getElementById("deliveryTime").value;
-    var cool= document.getElementById("cool").value;
-    var notcool= document.getElementById("notcool").value;
-    updatetotal();
-    if(total == 0)
-    {
-        Swal.fire({
-            title: "Vỏ hàng trống",
-            text: "Vui lòng quay lại để chọn hàng",
-            icon: "error"
-          });
-        return;
-    }
-    if(cool || notcool){
-      console.log("rgigjr");
-      return;
-    }
-    if(!Name || !number || !address || !datetime)
-    {
-        Swal.fire({
-            title: "Thiếu thông tin",
-            text: "Vui lòng nhâp lại",
-            icon: "error"
-          });
-        return;
-    }
-    
-    var cartContent = document.getElementsByClassName('cart-content')[0];
-    var cartItemsNames = document.getElementsByClassName('cart-product-title');
-    var cartItemsPrices = document.getElementsByClassName('cart-price');
-    var cartItemsQuantity= document.getElementsByClassName('cart-quantity');
-    var alertMsg = "";
-    for(var i = 0; i< cartItemsNames.length;i++)
-        alertMsg += cartItemsNames[i].innerText +" " + cartItemsPrices[i].innerText+ " "+ cartItemsQuantity[i].value+"\n";  
-    while(cartContent.hasChildNodes())
-    {
-        cartContent.removeChild(cartContent.firstChild);
-    }
-    saveData();
-    saveCartItems();
+      let events=[];
+      
+       await axios.post('/api/add-event-list', {Name})
+      .then(function (response) {
+        console.log(response.data);
+        events=response.data;
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      });
+
+        console.log("erer");
+       
+    for(var i = 0; i< events.length;i++)
+      {
+             console.log(events[i].id);
+          var ordersBox = document.createElement("div");
+          ordersBox.classList.add('order-box');
+          var orders = document.getElementsByClassName('orders')[0];
+            var ordersContent = `<div> "${events[i].id}"<\div>`
+            ordersBox.innerHTML = ordersContent;
+            orders.append(ordersBox);
+            
+      }
+      
 }
 
-
-function quantityChanged(event)
-{
-    var input=event.target;
-    if(isNaN(input.value)|| input.value <= 0){
-        input.value=1;
-    }
-    updatetotal();
-    saveCartItems();
-}
 
 
 function saveCartItems(){

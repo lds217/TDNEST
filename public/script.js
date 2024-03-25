@@ -1,25 +1,5 @@
 
 var Email;
-// Create or update data
-async function saveData() {
-  var cartItems =  localStorage.getItem('cartItems');
-  cartItems = JSON.parse(cartItems);
-  console.log(cartItems);
-  var recieve=[];
-  event.preventDefault();
-  var value=[];
-  Email =Email.value;
-  if (cartItems) {
-    try {
-       
-      await axios.post('/api/data' , { Email, cartItems, total });
-
-    } catch (error) {
-      console.log("bye");
-      console.error('Error saving data:', error);
-    }
-  }
-}
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////

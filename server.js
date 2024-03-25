@@ -1,3 +1,6 @@
+const express = require('express');
+const app = express();
+const db = require('./firestore');
 ////////////////////////////////////////////////////////
 const {google} = require('googleapis');
 
@@ -28,69 +31,92 @@ const auth = new google.auth.JWT(
     SCOPES
 );
 
-const insertEvent = async (event) => {
 
-    try {
-        let response = await calendar.events.insert({
-            auth: auth,
-            calendarId: calendarId,
-            resource: event
-        });
-    
-        if (response['status'] == 200 && response['statusText'] === 'OK') {
-            return 1;
-        } else {
-            return 0;
-        }
-    } catch (error) {
-        console.log(`Error at insertEvent --> ${error}`);
-        return 0;
-    }
+
+////////////////CREATE EVENT/////////////////////////
+
+// Your TIMEOFFSET Offset
+
+
+
+
+// Get date-time string for calender
+function createEvent(event){
+    return {
+      'id': event.uid,
+      'summary': event.Name  ,
+      'description': event.uid+'\n'+event.Name+ '\n' + event.number+ '\n'+ event.address +'\n' +event.datetime,
+      'start': {
+        'dateTime': event.startDate,
+        'timeZone': 'Asia/Ho_Chi_Minh'
+      },
+      'end': {
+        'dateTime': event.endDate,
+        'timeZone': 'Asia/Ho_Chi_Minh'
+      },
+      'locked':true,
+    };
+  
 };
 
+const getEvents = async (dateTimeStart, dateTimeEnd) => {
+        let response = await calendar.events.list({
+            auth: auth,
+            calendarId: calendarId,
+            timeMin: dateTimeStart,
+            timeMax: dateTimeEnd,
+            timeZone: 'Asia/Ho_Chi_Minh'
+        });
+    
+        let items = response['data']['items'];
+        return items;
+};
 ////////////////////////////////////////////////////////
-const express = require('express');
-const app = express();
-const db = require('./firestore');
-//const { insertEvent } = require('./calendar');
 
-var event = {
-            'summary': 'Bin đặt yến',
-            'description': 'Bin đặt 1 hũ yến',
-            'start': {
-                'dateTime': '2024-03-20T09:00:00+07:00',
-                'timeZone': 'Asia/Ho_Chi_Minh'
-            },
-            'end': {
-                'dateTime': '2024-03-20T09:30:00+07:00',
-                'timeZone': 'Asia/Ho_Chi_Minh'
-            }
-          };
+
+
 
 app.use(express.static('public'));
 
 app.use(express.json());
 
-// app.get('/api/data', async (req, res) => {
-//   const snapshot = await db.collection('data').get();
-//   const data = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
-//   res.json(data);
-// });
+app.get('/api/data', async (req, res) => {
+  const snapshot = await db.collection('data').get();
+  const data = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
+  res.json(data);
+});
+
+app.post('/api/add-event-list', async (req, res) => {
+  let startDate = '2024-03-23T05:09:00.000Z';
+  let endDate = '2024-03-24T05:09:00.000Z'
+  let response = await calendar.events.list({
+            auth: auth,
+            calendarId: calendarId,
+            timeMin: startDate,
+            timeMax: endDate,
+            timeZone: 'Asia/Ho_Chi_Minh'
+        });
+    
+        let items = response['data']['items'];
+  console.log(items);
+  res.json(items);
+});
+
 
 app.post('/api/add-event', async (req, res) => {
-    const eventData = req.body;
-    const event = await insertEvent(event);
-    res.json(event);
+  const newData = req.body;
+  let event1 = createEvent(newData);
+  calendar.events.insert({
+            auth: auth,
+            calendarId: calendarId,
+            resource: event1
+        });
+  res.json(event1);
 });
 
 app.post('/api/data', async (req, res) => {
   const newData = req.body;
-  const docRef = await db.collection('data').add(newData);
-  calendar.events.insert({
-            auth: auth,
-            calendarId: calendarId,
-            resource: event
-        });
+  const docRef = await db.collection('data').doc(newData.uid).set(newData);
   res.json({message: 'Data saved successfully', id: docRef.id});
 });
 
