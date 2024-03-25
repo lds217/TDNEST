@@ -86,6 +86,20 @@ app.get('/api/data', async (req, res) => {
   res.json(data);
 });
 
+app.post('/api/users', async (req, res) => {
+  const snapshot = await db.collection('users').doc('xLTQL4qFRzfXRuFa52lX');
+  const ad = await snapshot.get();
+  let data = ad.data();
+  
+  const newData = req.body;
+  let ok = 0;
+  console.log(newData.Name, data.username,newData.Pass,data.password)
+  if(newData.Name == data.username && newData.Pass == data.password)
+    ok=1;
+  console.log(ok);
+  res.json(ok);
+});
+
 app.post('/api/add-event-list', async (req, res) => {
   let startDate = '2024-03-23T05:09:00.000Z';
   let endDate = '2024-03-24T05:09:00.000Z'
@@ -98,7 +112,7 @@ app.post('/api/add-event-list', async (req, res) => {
         });
     
         let items = response['data']['items'];
-  console.log(items);
+ // console.log(items);
   res.json(items);
 });
 

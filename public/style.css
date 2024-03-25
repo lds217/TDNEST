@@ -329,6 +329,32 @@ header li a:hover::before {
     cursor: pointer;
 }
 
+.btn-custom{
+    display:flex;
+    margin: 1.5rem auto 0 auto;
+    border-radius: 10px;
+    padding: 12px 20px;
+    border: none;
+    background: #a64c32;
+    color: var(--bg-color);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.btn-today{
+    display:flex;
+    margin: 1.5rem auto 0 auto;
+    border-radius: 10px;
+    padding: 12px 20px;
+    border: none;
+    background: #a64c32;
+    color: var(--bg-color);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+}
+
 .btn-buy:hover{
     background: #e08814;
 }
@@ -425,6 +451,58 @@ header li a:hover::before {
     font-size: 200%;
 }
 
+/* admin */
+
+.adminLayout{
+    display: grid;
+    margin-top: 5px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 50px;
+    padding: 20px;
+}
+
+
+.adminLayout .right{
+    background-color: #be7a65;
+    border-radius: 20px;
+    padding: 40px;
+    color: #fff;
+}
+.adminLayout .right .form{
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 20px;
+    border-bottom: 10px solid var(--bg-color);
+    padding-bottom: 20px;
+}
+.adminLayout .form h1,
+.adminLayout .form .group:nth-child(-n+3){
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+.adminLayout .form input, 
+.adminLayout .form select
+{
+    width: 100%;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    border-radius: 20px;
+    margin-top: 10px;
+    border:none;
+    background-color: ;
+    color: black;
+}
+.adminLayout .right .return .row{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+.adminLayout .right .return .row div:nth-child(2){
+    font-weight: bold;
+    font-size: 200%;
+}
+
 /* RESPONSIVE DESIGN  */
 @media(max-width: 1080px) {
     .navbar .links, .navbar .action-button {
@@ -467,6 +545,9 @@ header li a:hover::before {
         position: absolute;
     }
   .checkoutLayout{
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .adminLayout{
     grid-template-columns: repeat(1, 1fr);
   }
 }
