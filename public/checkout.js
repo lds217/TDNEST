@@ -38,6 +38,13 @@ function convert(date){
 
 //////////////////////////////////////////////////
 
+function checkNum(str)
+{
+  for(var i = 0 ;i<str.length; i++)
+    if(str[i]<'0'||str[i]>'9')
+        return false;
+  return true;
+}
 
 // Create or update data
 async function saveData() {

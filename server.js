@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const db = require('./firestore');
+const session = require('express-session');
 ////////////////////////////////////////////////////////
 const {google} = require('googleapis');
 
@@ -74,33 +75,123 @@ const getEvents = async (dateTimeStart, dateTimeEnd) => {
 ////////////////////////////////////////////////////////
 
 
+app.use(session({
+  secret: process.env.SECRETKEY,
+  resave: false,
+  saveUninitialized: true
+}));
 
+function requireLogin(req, res, next) {
+  if (req.session && req.session.user) {
+    return next();
+  } else {
+    return res.redirect('/login.html');
+  }
+}
 
 app.use(express.static('public'));
-
+app.use(express.static('private'));
 app.use(express.json());
 
-app.get('/api/data', async (req, res) => {
-  const snapshot = await db.collection('data').get();
-  const data = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
-  res.json(data);
+
+app.post('/api/users', async (req, res) => {
+  const snapshot = await db.collection('users').doc('xLTQL4qFRzfXRuFa52lX');
+  const ad = await snapshot.get();
+  let data = ad.data();
+  const newData = req.body;
+  let ok = 0;
+  console.log(newData.Name, data.username,newData.Pass,data.password)
+  if(newData.Name == data.username && newData.Pass == data.password)
+  {
+    req.session.user = newData.Name;
+    console.log('hi');
+    res.json(true);
+  }
+  else
+   res.json(false);
+
 });
 
-app.post('/api/add-event-list', async (req, res) => {
-  let startDate = '2024-03-23T05:09:00.000Z';
-  let endDate = '2024-03-24T05:09:00.000Z'
-  let response = await calendar.events.list({
-            auth: auth,
-            calendarId: calendarId,
-            timeMin: startDate,
-            timeMax: endDate,
-            timeZone: 'Asia/Ho_Chi_Minh'
-        });
-    
-        let items = response['data']['items'];
-  console.log(items);
-  res.json(items);
+app.post('/api/users', async (req, res) => {
+  const snapshot = await db.collection('users').doc('xLTQL4qFRzfXRuFa52lX');
+  const ad = await snapshot.get();
+  let data = ad.data();
+  const newData = req.body;
+  let ok = 0;
+  console.log(newData.Name, data.username,newData.Pass,data.password)
+  if(newData.Name == data.username && newData.Pass == data.password)
+  {
+    req.session.user = newData.Name;
+    console.log('hi');
+    res.json(true);
+  }
+  else
+   res.json(false);
+
 });
+
+
+app.post('/check', async (req, res) => {
+  let ok =0;
+  if (!req.session.user)
+    {
+      console.log('may chua dang nhap');
+      res.json(ok);
+      return;
+    }
+  req.session.user = "ok";
+   ok=1;
+    res.json(ok);
+});
+
+// app.post('/api/add-event-list', async (req, res) => {
+//   let ok =0;
+//   if (!req.session || !req.session.user)
+//     {
+//       console.log('may chua dang nhap');
+//       res.json(ok);
+//       return;
+//     }
+//   let data=req.body;
+//   let startDate = data.startDate;
+//   let endDate = data.endDate;
+//   let response = await calendar.events.list({
+//             auth: auth,
+//             calendarId: calendarId,
+//             timeMin: startDate,
+//             timeMax: endDate,
+//             timeZone: 'Asia/Ho_Chi_Minh'
+//         });
+    
+//       let items = response['data']['items'];
+//  // console.log(items);
+//     res.json(items);
+// });
+
+app.post('/api/add-event-list', async (req, res) => {
+  let ok =0;
+  // if (!req.session.user)
+  //   {
+  //     console.log('may chua dang nhap');
+  //     res.json(ok);
+  //     return;
+  //   }
+  req.session.user = "ok";
+  let event=req.body;
+  let start=event.startDate;
+  let end=event.endDate;
+  
+    const citiesRef = db.collection('data');
+    const snapshot = await citiesRef.where('datetime', '>=', start).where('datetime', '<=', end).get();
+  let items=[];
+    snapshot.forEach((doc) => {
+    items.push(doc.data());
+});
+ 
+  console.log(items);
+    res.json(items);
+});
+
 
 
 app.post('/api/add-event', async (req, res) => {
