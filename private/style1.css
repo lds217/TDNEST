@@ -17,6 +17,8 @@ body {
     height: 100vh;
 }
 
+
+
 html { 
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -42,8 +44,6 @@ a:active, i:active {
 
 h3, h2 {
     padding: 5px;
-    align-items: center;
-  text-align: center;
 }
 
 .container {
@@ -251,9 +251,17 @@ header li a:hover::before {
     margin-top: 2rem;
 }
 
+i{
+  align-items:right;
+}
+
+
 .cart-box{
+      border: 2px solid #a64c32;
+    padding:10px;
+    border-radius: 5px;
     display: grid;
-    grid-template-columns: 32% 50% 18%;
+    grid-template-columns: 30% 20% 2% 30%;
     align-items: center;
     gap: 1rem;
     margin-top: 1rem;
@@ -298,7 +306,7 @@ header li a:hover::before {
 
 .cart-remove{
     font-size: 24px;
-    color: var(--main-color);
+    color: var(--bg-color);
     cursor: pointer;
 }
 
@@ -318,7 +326,7 @@ header li a:hover::before {
     margin-left:0.5rem;
 }
 
-.btn-buy{
+.btn-buy,.btn-del,.btn-save{
     display:flex;
     margin: 1.5rem auto 0 auto;
     border-radius: 10px;
@@ -357,32 +365,7 @@ header li a:hover::before {
     cursor: pointer;
 }
 
-.btn-login{
-  display:flex;
-    margin: .5rem auto 0 auto;
-    border-radius: 10px;
-    padding: 12px 20px;
-    border: none;
-    background: #a64c32;
-    color: var(--bg-color);
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-}
-
-.btn-custom:hover{
-  background: #e08814;
-}
-
-.btn-today:hover{
-  background: #e08814;
-}
-
-.btn-login:hover{
-  background: #e08814;
-}
-
-.btn-buy:hover{
+.btn-buy:hover,.btn-today:hover,.btn-custom:hover,btn-del:hover,.btn-save:hover{
     background: #e08814;
 }
 
@@ -450,9 +433,6 @@ header li a:hover::before {
     border-bottom: 1px solid #7a7fe2;
     padding-bottom: 20px;
 }
-
-
-
 .checkoutLayout .form h1,
 .checkoutLayout .form .group:nth-child(-n+3){
     grid-column-start: 1;
@@ -491,18 +471,36 @@ header li a:hover::before {
     padding: 20px;
 }
 
+.adminLayoutOrder{
+    display: grid;
+    margin-top: 5px;
+    margin-left:5px;
+    margin-right:5px;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 50px;
+    padding: 20px;
+  
+}
 
 .adminLayout .right{
+    background-color: #be7a65;
+    border-radius: 20px;
+  height:500px;
+    padding: 40px;
+    color: #fff;
+}
+
+.adminLayoutOrder .right{
     background-color: #be7a65;
     border-radius: 20px;
     padding: 40px;
     color: #fff;
 }
+
 .adminLayout .right .form{
     display: grid;
     grid-template-columns: repeat(1, 1fr);
     gap: 20px;
-    border-bottom: 10px solid var(--bg-color);
     padding-bottom: 20px;
 }
 .adminLayout .form h1,
@@ -532,44 +530,17 @@ header li a:hover::before {
     font-weight: bold;
     font-size: 200%;
 }
-/* login */
-.loginContainer{
-  max-width: 1068px;
-  margin:auto;
-  width:100;
-  text-align:center;
-  align-items:center;
+
+.order-content{
+  height:80%;
+  overflow: auto;
 }
 
- .inner{
-    background-color: #be7a65;
-    border-radius: 20px;
-   margin-left:20%;
-   margin-right:20%;
-   padding:20px;
-    color: #fff;
-    text-align:center;
+.btnGroup{
+  display:grid;
+  grid-template-columns: repeat(2, 1fr);
+  margin-top: 50px;
 }
-
-.loginForm{
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    gap: 2px;
-    padding-bottom: 20px;
-}
-
-.loginForm input, 
-.loginForm select
-{
-    padding: 10px 20px;
-    box-sizing: border-box;
-    border-radius: 20px;
-    margin-top: 10px;
-    border:none;
-    background-color: ;
-    color: black;
-}
-
 
 /* RESPONSIVE DESIGN  */
 @media(max-width: 1080px) {
@@ -636,9 +607,6 @@ header li a:hover::before {
     border: 2px solid #be7a65;
     border-radius: 10px;
 }
-
-
-
 
 
 

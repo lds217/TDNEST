@@ -33,12 +33,12 @@ function ready(){
 
     //reload from local storage
     //localStorage.clear();
-    if(localStorage["cartItems"]){
-        console.log("co rui");
+
         loadCartItems();
         updatetotal();
         console.log(total);
-    }
+      
+   localStorage['status'] = false;
 
     // remove Items from cart
     var removeCartButtons = document.getElementsByClassName('cart-remove');

@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://kit.fontawesome.com/e0797236d9.js" crossorigin="anonymous"></script>
-   <link rel="stylesheet" href="style.css">
+   <link rel="stylesheet" href="style1.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -61,59 +61,90 @@
     <main>
         <section class="shop container">       
           <section class="adminLayout">
-             <div class="right">
-               <h2>
-                ĐĂNG NHẬP
-              </h2>
-               <div class="form">
-                      <div class="group">
-                          <label for="name">Tài khoản</label>
-                          <input type="text" name="name" id="name">
-                      </div>
-
-                      <div class="group">
-                          <label for="phone">Mật khẩu</label>
-                           <input type="password" id="pwd" name="pwd" minlength="8">
-                      </div>
-                       <input type="text" id="notcool" class="hihi">
-              </div>
-            </div>
             <div class="right">
               
               <div class="form">
                 <h2>
                 TÙY CHỈNH XUẤT ĐƠN
-              </h2>
-                <div class="form">
+                </h2>
                     <label for="deliveryTime">Thời gian bắt đầu</label>
                     <input type="datetime-local" id="startTime" name="startTime">
                     <label for="deliveryTime">Thời gian kết thúc</label>
                     <input type="datetime-local" id="endTime" name="endTime">
-                </div>
-              <button class="btn-custom">Đơn hàng yêu cầu</button>
-            </div>
-              <div class="form">
-              <button class="btn-today">Đơn hàng ngày hôm nay</button>
+                  <button class="btn-custom">Đơn hàng yêu cầu</button>
               </div>
             </div>
           <div class="right">
-             
-              <h2 class="shop-title">
-                ĐƠN HÀNG HÔM NAY
+               <h2 class="shop-title">
+                ĐƠN HÀNG
               </h2>
-               <div class="orders">
-
-               </div>
-            </div> 
-            <iframe src="https://calendar.google.com/calendar/embed?height=600&wkst=2&ctz=Asia%2FHo_Chi_Minh&bgcolor=%23E67C73&mode=WEEK&src=NWY3ZDVhMTk0MjUzZmVjMTA3MzUwOTlmOGU5MjZjOTA3NWU4YzVhOTM0ZTc3YTA0OTBkOGNjMzY4NDUzMzM4ZEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%237CB342" style="border:solid 1px #777" width="500" height="500" frameborder="0" scrolling="no"></iframe>
-          <div class="cartCheckout">
+            <div class="order-content">
             </div>
+            </div> 
+            
+          
            
             
         </section>
           
-      </section>   
-      
+      </section> 
+      <section class="adminLayoutOrder">
+  
+        <div class="right"> 
+         <h2 class="shop-title">XUẤT ĐƠN</h2>
+          <div class="title">
+          </div>
+          
+                <!-- cart content -->
+<!--                 <div class="cart-content"></div> -->
+          <div class="cart-content"><div class="cart-box">
+                            <img src="https://cdn.glitch.global/6bafa110-7d09-438f-94a0-f882a483c342/product1.jpeg?v=1710313286410" alt="" class="cart-img">
+                            <div class="detail-box">
+                                <div class="cart-product-title">YẾN SÀO</div>
+                                <div class="cart-price">100k</div>
+                                <input type="number" value="1" class="cart-quantity">
+                            </div>
+                            
+                            <!-- remove cart -->
+                            <i class="bx bxs-trash-alt cart-remove"></i>
+            <div class="caption">
+                              wdadawd efef efs efs ef sef sef sef s fs
+              wdadawd efef efs efs ef sef sef sef s fs
+              wdadawd efef efs efs ef sef sef sef s fs
+              wdadawd efef efs efs ef sef sef sef s fs
+                            </div>
+                        </div><div class="cart-box">
+                            <img src="https://cdn.glitch.global/6bafa110-7d09-438f-94a0-f882a483c342/product2.jpeg?v=1710313255782" alt="" class="cart-img">
+                            <div class="detail-box">
+                                <div class="cart-product-title">YẾN SÀO HƠI VIP</div>
+                                <div class="cart-price">160k</div>
+                                <input type="number" value="1" class="cart-quantity">
+                            </div>
+                            <!-- remove cart -->
+                            <i class="bx bxs-trash-alt cart-remove"></i>
+                        </div><div class="cart-box">
+                            <img src="https://cdn.glitch.global/6bafa110-7d09-438f-94a0-f882a483c342/product3.jpeg?v=1710313260941" alt="" class="cart-img">
+                            <div class="detail-box">
+                                <div class="cart-product-title">YẾN SÀO VIP</div>
+                                <div class="cart-price">520k</div>
+                                <input type="number" value="3" class="cart-quantity">
+                            </div>
+                            <!-- remove cart -->
+                            <i class="bx bxs-trash-alt cart-remove"></i>
+                        </div></div>
+                <!-- sum           -->
+            <div class="total">
+                    <div class="total-title">Tổng</div>
+                    <div class="total-price">0k</div>
+                </div>
+          <div class="btnGroup">
+              <button class="btn-del">Xóa đơn</button>
+              <button class="btn-save">Lưu đơn</button>
+          </div>
+        </div>
+            
+      </section>
+               
     </main>
     <section>
         <!-- link to js -->
