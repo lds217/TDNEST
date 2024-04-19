@@ -5,38 +5,11 @@ var number;
 var address;
 var datetime;
 var total=0;
+var otherCaption;
 
-////////////////////////////////////////////////////
-const TIMEOFFSET = '+07:00';
-function uuidv4() {
-    return "2107200505062006".replace(/[018]/g, c =>
-      (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-    );
-  }
-
-function convert(date){
-    var year = date.getYear();
-    var month = date.getMonth() + 1;
-    if (month < 10) {
-        month = `0${month}`;
-    }
-    var day = date.getDate();
-    if (day < 10) {
-        day = `0${day}`;
-    }
-    var hour = date.getHours();
-    if (hour < 10) {
-        hour = `0${hour}`;
-    }
-    var minute = date.getMinutes();
-    if (minute < 10) {
-        minute = `0${minute}`;
-    }
-    let startDate = `${year}-${month}-${day}T${hour}:${minute}:00.000${TIMEOFFSET}`;
-    return  startDate;
-}
-
-//////////////////////////////////////////////////
+  ///////////////////////////////////////////////////
+ //          THIS AREA IS FOR MY MEO MEO          //
+///////////////////////////////////////////////////
 
 function checkNum(str)
 {
@@ -52,9 +25,12 @@ async function saveData() {
   cartItems = JSON.parse(cartItems);
   console.log(cartItems);
   var uid = number+uuidv4();
+  otherCaption = document.getElementById('otherCaption').value;
+  console.log(otherCaption);
   if (cartItems) {
        // post firebase
-      await axios.post('/api/data' , { Name, number, address, datetime, cartItems, total, uid });
+      var status = "Ordered";
+      await axios.post('/api/data' , { Name, number, address, datetime, cartItems, total, uid, otherCaption, status });
       // post calendar
       let date = new Date(datetime);
       let startDate = date.toISOString();
@@ -63,8 +39,8 @@ async function saveData() {
       let endDate = date.toISOString();
       console.log(startDate,endDate);
       ///////////////////////////////////////
-      await axios.post('/api/add-event' , { Name, number, address, datetime, cartItems, total, uid, startDate,endDate });
-      console.log("hii");
+      await axios.post('/api/add-event' , { Name, number, address, datetime, cartItems, total, uid, startDate,endDate, otherCaption, status });
+      ////////////////////////////////////////
       const Toast = Swal.mixin({
         toast: true,
         position: "top-end",
@@ -105,7 +81,13 @@ function ready(){
         updatetotal();
         console.log(total);
     }
+  var caption = document.getElementsByClassName('caption');
+    for(var i =0; i < caption.length; i++)
+    {
+        var cap = caption[i];
+        cap.addEventListener("change", saveCartItems);
 
+    }
     // remove Items from cart
     var removeCartButtons = document.getElementsByClassName('cart-remove');
     console.log(total);
@@ -138,6 +120,7 @@ function buyButtonClicked(event)
     var cool= document.getElementById("cool").value;
     var notcool= document.getElementById("notcool").value;
     updatetotal();
+    //datetime > now + 4 tiếng 
     if(total == 0)
     {
         Swal.fire({
@@ -148,7 +131,6 @@ function buyButtonClicked(event)
         return;
     }
     if(cool || notcool){
-      console.log("rgigjr");
       return;
     }
     if(!Name || !number || !address || !datetime)
@@ -199,12 +181,13 @@ function saveCartItems(){
         var cartItemsPrice = cartBox.getElementsByClassName('cart-price')[0];
         var cartItemsQuantity= cartBox.getElementsByClassName('cart-quantity')[0];
         var cartItemsImg= cartBox.getElementsByClassName('cart-img')[0].src;
-
+        var cartItemsCap= cartBox.getElementsByClassName('caption')[0].value;
         var Item = {
             title : cartItemsName.innerText,
             price : cartItemsPrice.innerText,
             quantity : cartItemsQuantity.value,
             img : cartItemsImg,
+            cap : cartItemsCap
         }
         cartItems.push(Item);
         console.log(cartItemsImg);
@@ -223,7 +206,7 @@ function loadCartItems()
         {
             var item = cartItems[i];
             console.log(item.title, item.price,  item.img);
-            addProductToCart(item.title, item.price, item.img);
+            addProductToCart(item.title, item.price, item.img, item.cap);
             var cartBoxes = document.getElementsByClassName('cart-box');
             var cartBox = cartBoxes[cartBoxes.length - 1];
             var quantityElement = cartBox.getElementsByClassName('cart-quantity')[0];
@@ -232,7 +215,7 @@ function loadCartItems()
     }
 }
 
-function addProductToCart(title, price, productImg)
+function addProductToCart(title, price, productImg, cap)
 {
     var cartShopBox = document.createElement("div");
     cartShopBox.classList.add('cart-box');
@@ -251,9 +234,13 @@ function addProductToCart(title, price, productImg)
                                 <div class="cart-product-title">${title}</div>
                                 <div class="cart-price">${price}</div>
                                 <input type="number" value="1" class="cart-quantity">
+                                <textarea class="caption" placeholder ="Chú thích">${cap}</textarea>
                             </div>
                             <!-- remove cart -->
                             <i class="bx bxs-trash-alt cart-remove"></i>
+                           
+                              
+                    
                         `
         cartShopBox.innerHTML = cartBoxContent;
         cartItems.append(cartShopBox);

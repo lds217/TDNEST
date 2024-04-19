@@ -11,12 +11,16 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="Images/favicon.ico" rel="icon" type="image/x-icon">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>  
+     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>  
     <base target="_blank">
     <title>Thanh Đặng Web</title>
 </head>
 
 <body>
+     
+  <div class="wrapper">
+  <iframe src="https://free.timeanddate.com/clock/i9bzwfm8/n218/tlvn42/fn6/fs16/fc9ff/tc000/ftb/bas2/bat1/bacfff/pa8/tt0/tw1/tm1/td1/th1/ts1/tb4" frameborder="0" width="258" height="60"></iframe>
+</div>
     <header>
         <div class="navbar">
             <div class="logo">
@@ -58,8 +62,13 @@
         }
     </script>
   
+  
+  
     <main>
-        <section class="shop container">       
+        
+        <section class="shop container"> 
+         
+
           <section class="adminLayout">
             <div class="right">
               
@@ -71,7 +80,11 @@
                     <input type="datetime-local" id="startTime" name="startTime">
                     <label for="deliveryTime">Thời gian kết thúc</label>
                     <input type="datetime-local" id="endTime" name="endTime">
+                
+                <div class="btnGroup">  
                   <button class="btn-custom">Đơn hàng yêu cầu</button>
+                  <button class="btn-today">Đơn hàng hôm nay</button>
+                </div>
               </div>
             </div>
           <div class="right">
@@ -86,7 +99,8 @@
            
             
         </section>
-          
+        
+
       </section> 
       <section class="adminLayoutOrder">
   
@@ -107,12 +121,7 @@
                             
                             <!-- remove cart -->
                             <i class="bx bxs-trash-alt cart-remove"></i>
-            <div class="caption">
-                              wdadawd efef efs efs ef sef sef sef s fs
-              wdadawd efef efs efs ef sef sef sef s fs
-              wdadawd efef efs efs ef sef sef sef s fs
-              wdadawd efef efs efs ef sef sef sef s fs
-                            </div>
+                            <textarea class="cart-item" placeholder ="Chú thích" rows="4" cols="50"></textarea>
                         </div><div class="cart-box">
                             <img src="https://cdn.glitch.global/6bafa110-7d09-438f-94a0-f882a483c342/product2.jpeg?v=1710313255782" alt="" class="cart-img">
                             <div class="detail-box">
@@ -122,6 +131,7 @@
                             </div>
                             <!-- remove cart -->
                             <i class="bx bxs-trash-alt cart-remove"></i>
+                            <textarea class="cart-item" placeholder ="Chú thích" rows="4" cols="50"></textarea>
                         </div><div class="cart-box">
                             <img src="https://cdn.glitch.global/6bafa110-7d09-438f-94a0-f882a483c342/product3.jpeg?v=1710313260941" alt="" class="cart-img">
                             <div class="detail-box">
@@ -131,20 +141,80 @@
                             </div>
                             <!-- remove cart -->
                             <i class="bx bxs-trash-alt cart-remove"></i>
+                            <textarea class="cart-item" placeholder ="Chú thích" rows="4" cols="50"></textarea>
                         </div></div>
+          
                 <!-- sum           -->
-            <div class="total">
-                    <div class="total-title">Tổng</div>
-                    <div class="total-price">0k</div>
-                </div>
-          <div class="btnGroup">
-              <button class="btn-del">Xóa đơn</button>
-              <button class="btn-save">Lưu đơn</button>
-          </div>
+          
+            
         </div>
             
       </section>
-               
+      
+      <section class="adminLayout1">
+            <div class="right">
+              <div class="form">
+            <div class="prod-box">
+              <img src="https://cdn.glitch.global/6bafa110-7d09-438f-94a0-f882a483c342/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg?v=1713415819084" alt="" class="prod-img" id="prod-img">
+              <div class="detail-box">
+                  <div class="group">
+                      <label for="id">ID (Bao gồm chữ, số, gạch dưới)</label>
+                      <input type="text" name="id" id="id">
+                 </div>
+                  <div class="group">
+                      <label for="name">Tên mặt hàng</label>
+                      <input type="text" name="name" id="name">
+                  </div>
+
+                  <div class="group">
+                      <label for="phone">Giá tiền</label>
+                      <input type="number" name="price" id="price">
+                  </div>
+                   <div class="group">
+                      <label for="cap">Chú thích</label>
+                       <textarea id="cap" placeholder ="Chú thích"></textarea>
+                 </div>
+                
+                 <form id="uploadForm" enctype="multipart/form-data">
+                <input type="file" name="image" id="imageInput">
+                   <div>
+                     
+                  
+                   <button type="submit" >Load ảnh</button> </div>
+                  </form> 
+                  
+                <div id="status"></div>  
+                
+                
+              </div>  
+              </div>
+            </div>
+              
+              <button class="btn-add">
+                  Thêm hoặc chỉnh sửa hàng
+                </button>
+          </div>
+          
+          <div class="right">
+               <h2 class="shop-title">
+                MẶT HÀNG
+              </h2>
+            <div class="prod-content">
+              
+              
+              
+             
+              
+              
+              
+             
+              
+            </div>
+            <button class="btn-show">
+                  Hiển thị các mặt hàng
+                </button>
+            </div> 
+      </section>        
     </main>
     <section>
         <!-- link to js -->

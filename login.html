@@ -1,7 +1,5 @@
-
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -40,12 +38,12 @@
                 <li><a href="shop.html" target="_self">Shop</a></li>
             </div>
           
-          <div class="toggle-button">
+            <div class="toggle-button">
                 <i class="fa-solid fa-bars"></i>
             </div>
-           
-          </div>      
-      </header>
+       </div>
+
+    </header>
 
     <script>
         const toggleButton = document.querySelector('.toggle-button');
@@ -59,77 +57,38 @@
             toggleButtonIcon.classList = isOpen ? "fa-solid fa-xmark" : "fa-solid fa-bars";
         }
     </script>
-
+  
     <main>
-        
-        <section class="checkoutLayout">
-          
-            <div class="cartCheckout">
-               <h2 class="shop-title">
-                GIỎ HÀNG
+        <section class="loginContainer">    
+          <h2>
+            ADMIN LOGIN
+          </h2>
+             <div class="inner">
+               <h2>
+                ĐĂNG NHẬP
               </h2>
-                <!-- cart content -->
-                <div class="cart-content">
-                           
-                </div>
-            </div>
-           <div class="right">
-              <h2 class="shop-title">
-                THÔNG TIN KHÁCH HÀNG
-              </h2>
-             <input type="text" id="cool" class="hiho">
-              <div class="form">
-                  <div class="group">
-                      <label for="name">Họ và tên</label>
-                      <input type="text" name="name" id="name">
-                  </div>
+               <div class="loginForm">
+                      <div class="group">
+                          <label for="name">Tài khoản</label>
+                          <input type="text" name="name" id="name">
+                      </div>
 
-                  <div class="group">
-                      <label for="phone">Số điện thoại</label>
-                      <input type="text" name="phone" id="phone">
-                  </div>
-                
-                  <div class="group">
-                      <label for="address">Địa chỉ</label>
-                      <input type="text" name="address" id="address">
-                  </div>
-                   <input type="text" id="notcool" class="hihi">
-                   
-                  <form action="/action_page.php">
-                    <label for="deliveryTime">Thời gian giao hàng(*)</label>
-                    <input type="datetime-local" id="deliveryTime" name="deliveryTime">
-                  </form>
-                <div class="group">
-                      <label for="caption">Chú thích (không bắt buộc)</label>
-                      <input type="textarea"  rows="4" cols="50" name="otherCaption" id="otherCaption">
-                  </div>
-                
-              </div>
-              <div class="return">
-                  <div class="row">
-                      <div>Tổng số lượng</div>
-                      <div class="totalQuantity">70</div>
-                  </div>
-                  <div class="row">
-                      <div>Tổng tiền</div>
-                      <div class="total-price">$900</div>
-                  </div>
-              </div>
-              <button class="btn-buy">Đặt hàng</button>
-              <div class="caption">
-                <p>(*)Thời gian giao hàng sẽ được trao đổi lại khi gọi xác nhận đơn</p>
-                </div>
+                      <div class="group">
+                          <label for="phone">Mật khẩu</label>
+                           <input type="password" id="pwd" name="pwd" minlength="8">
+                      </div>
+                       <input type="text" id="notcool" class="hihi">
+                        <button type="Button" class="btn-login">Đăng nhập</button>
+               </div>
             </div>
-            
-        </section>
-      <input type="hidden" id="data-id" />
+          </section>
     </main>
     <section>
         <!-- link to js -->
       <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-      <script src="checkout.js" ></script>
+      <script src="login.js" ></script>
         
     </section>
+  
 </body>
-
 </html>

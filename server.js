@@ -4,7 +4,10 @@ const db = require('./firestore');
 const session = require('express-session');
 ////////////////////////////////////////////////////////
 const {google} = require('googleapis');
-
+const multer = require('multer');
+const FormData = require('form-data');
+const fs = require('fs');
+const axios = require('axios');
 // Provide the required configuration
 const CREDENTIALS = {
   type: process.env.FIREBASE_TYPE,
@@ -33,7 +36,6 @@ const auth = new google.auth.JWT(
 );
 
 
-
 ////////////////CREATE EVENT/////////////////////////
 
 // Your TIMEOFFSET Offset
@@ -43,10 +45,19 @@ const auth = new google.auth.JWT(
 
 // Get date-time string for calender
 function createEvent(event){
+  let color;
+  if(event.status=="Ordered")
+      color="8";
+  else
+    if(event.status=="Confirmed")
+        color="7";
+    else
+        color="11";
     return {
+      'colorId': color,
       'id': event.uid,
       'summary': event.Name  ,
-      'description': event.uid+'\n'+event.Name+ '\n' + event.number+ '\n'+ event.address +'\n' +event.datetime,
+      'description': event.uid+'\n'+event.Name+ '\n' + event.number+ '\n'+ event.address +'\n' +event.datetime + '\n' + event.otherCaption + '\n' + event.status,
       'start': {
         'dateTime': event.startDate,
         'timeZone': 'Asia/Ho_Chi_Minh'
@@ -60,20 +71,19 @@ function createEvent(event){
   
 };
 
-const getEvents = async (dateTimeStart, dateTimeEnd) => {
-        let response = await calendar.events.list({
-            auth: auth,
-            calendarId: calendarId,
-            timeMin: dateTimeStart,
-            timeMax: dateTimeEnd,
-            timeZone: 'Asia/Ho_Chi_Minh'
-        });
-    
-        let items = response['data']['items'];
-        return items;
-};
 ////////////////////////////////////////////////////////
+///////Limit rate
+// const rateLimit = require('express-rate-limit');
+// const limiter = rateLimit({
+//   windowMs: 15 * 60 * 1000, 
+//   max: 10, 
+//   message: "Too many requests from this IP, please try again later.",
+//   keyGenerator: function(req /*, res */) {
+//     return req.ip; 
+//   }
+// });
 
+// app.use(limiter);
 
 app.use(session({
   secret: process.env.SECRETKEY,
@@ -81,20 +91,34 @@ app.use(session({
   saveUninitialized: true
 }));
 
-function requireLogin(req, res, next) {
-  if (req.session && req.session.user) {
-    return next();
-  } else {
-    return res.redirect('/login.html');
-  }
-}
+
 
 app.use(express.static('public'));
 app.use(express.static('private'));
 app.use(express.json());
 
 
-app.post('/api/users', async (req, res) => {
+app.get('/admin', (req, res) => {
+  // Check if user is logged in
+  if (req.session.user) {
+    // Send the admin.html file
+    res.sendFile(__dirname+ '/admin.html');
+  } else {
+    res.redirect('/login'); // Redirect to login page if not logged in
+  }
+});
+
+app.get('/checkAuth', (req, res) => {
+  // Check if user is logged in
+  if (req.session.user) {
+    res.sendStatus(200); // User is authenticated
+  } else {
+    res.sendStatus(401); // User is not authenticated
+  }
+});
+
+app.post('/login', async (req, res) => {
+  // Authentication logic
   const snapshot = await db.collection('users').doc('xLTQL4qFRzfXRuFa52lX');
   const ad = await snapshot.get();
   let data = ad.data();
@@ -103,80 +127,26 @@ app.post('/api/users', async (req, res) => {
   console.log(newData.Name, data.username,newData.Pass,data.password)
   if(newData.Name == data.username && newData.Pass == data.password)
   {
-    req.session.user = newData.Name;
-    console.log('hi');
-    res.json(true);
+      
+     req.session.user = newData.Name; // Store user information in session
+    res.redirect('/admin'); // Redirect to dashboard or any authenticated page
+  } else {
+    res.status(401).send('Invalid credentials');
   }
-  else
-   res.json(false);
-
-});
-
-app.post('/api/users', async (req, res) => {
-  const snapshot = await db.collection('users').doc('xLTQL4qFRzfXRuFa52lX');
-  const ad = await snapshot.get();
-  let data = ad.data();
-  const newData = req.body;
-  let ok = 0;
-  console.log(newData.Name, data.username,newData.Pass,data.password)
-  if(newData.Name == data.username && newData.Pass == data.password)
-  {
-    req.session.user = newData.Name;
-    console.log('hi');
-    res.json(true);
-  }
-  else
-   res.json(false);
-
 });
 
 
-app.post('/check', async (req, res) => {
-  let ok =0;
-  if (!req.session.user)
-    {
-      console.log('may chua dang nhap');
-      res.json(ok);
-      return;
-    }
-  req.session.user = "ok";
-   ok=1;
-    res.json(ok);
-});
 
-// app.post('/api/add-event-list', async (req, res) => {
-//   let ok =0;
-//   if (!req.session || !req.session.user)
-//     {
-//       console.log('may chua dang nhap');
-//       res.json(ok);
-//       return;
-//     }
-//   let data=req.body;
-//   let startDate = data.startDate;
-//   let endDate = data.endDate;
-//   let response = await calendar.events.list({
-//             auth: auth,
-//             calendarId: calendarId,
-//             timeMin: startDate,
-//             timeMax: endDate,
-//             timeZone: 'Asia/Ho_Chi_Minh'
-//         });
-    
-//       let items = response['data']['items'];
-//  // console.log(items);
-//     res.json(items);
-// });
+
+  ///////////////////////////////////////////////////
+ //          THIS AREA IS FOR MY MEO MEO          //
+///////////////////////////////////////////////////
+
+
+
 
 app.post('/api/add-event-list', async (req, res) => {
-  let ok =0;
-  // if (!req.session.user)
-  //   {
-  //     console.log('may chua dang nhap');
-  //     res.json(ok);
-  //     return;
-  //   }
-  req.session.user = "ok";
+  
   let event=req.body;
   let start=event.startDate;
   let end=event.endDate;
@@ -188,21 +158,83 @@ app.post('/api/add-event-list', async (req, res) => {
     items.push(doc.data());
 });
  
-  console.log(items);
+  //console.log(items);
     res.json(items);
 });
+const crypto = require('crypto');
 
-
+function uuidv4() {
+  return '2107200505062006'.replace(/[018]/g, c =>
+    (c ^ crypto.randomBytes(1)[0] & 15 >> c / 4).toString(16)
+  );
+}
 
 app.post('/api/add-event', async (req, res) => {
+  
   const newData = req.body;
+  newData.uid = newData.number + uuidv4() +"l";
+  const docRef = await db.collection('data').doc(newData.uid).set(newData);
   let event1 = createEvent(newData);
-  calendar.events.insert({
+  test=calendar.events.insert({
             auth: auth,
             calendarId: calendarId,
             resource: event1
         });
-  res.json(event1);
+  res.json(newData);
+});
+
+app.post('/api/delete-event', async (req, res) => {
+  const newData = req.body;
+  console.log(newData);
+ await db.collection('data').doc(newData.uid).delete();
+  res.json(newData);
+});
+
+app.post('/api/update-event', async (req, res) => {
+  const newData = req.body;
+  const docRef = await db.collection('data').doc(newData.uid).set(newData);
+  let eventId = newData.uid;
+  calendar.events.get({
+  auth: auth,
+  calendarId: calendarId,
+  eventId: eventId,
+  }, (err, eventRes) => {
+    if (err) {
+      console.error('Error fetching event:', err);
+      return;
+    }
+
+  // Modify the event data
+  const event = newData;
+   const newEvent = eventRes.data;
+    let color;
+  if(event.status=="Ordered")
+      color="8";
+  else
+    if(event.status=="Confirmed")
+        color="7";
+    else
+        color="11";
+  
+  newEvent.summary = event.Name;
+  newEvent.description = event.uid+'\n'+event.Name+ '\n' + event.number+ '\n'+ event.address +'\n' +event.datetime + '\n' + event.otherCaption + '\n' + event.status;
+  newEvent.start.dateTime = event.startDate;
+  newEvent.end.dateTime = event.endDate;
+   newEvent.colorId = color;
+  calendar.events.update({
+    auth: auth,
+    calendarId: calendarId,
+    eventId: eventId,
+    resource: newEvent,
+  }, (err, updatedEvent) => {
+    if (err) {
+      console.error('Error updating event:', err);
+      return;
+    }
+    console.log('Event updated:', updatedEvent.data);
+  });
+  });
+  res.json(newData);
 });
 
 app.post('/api/data', async (req, res) => {
@@ -211,6 +243,65 @@ app.post('/api/data', async (req, res) => {
   res.json({message: 'Data saved successfully', id: docRef.id});
 });
 
+app.post('/api/prod-data', async (req, res) => {
+  const newData = req.body;
+  const cityRef = db.collection('prod').doc(newData.id);
+  const doc = await cityRef.get();
+  if (!doc.exists) {
+      const docRef = await db.collection('prod').doc(newData.id).set(newData);
+  } else {
+    cityRef.update(newData);
+  }
+   
+  res.json("1");
+});
+
+app.post('/api/show-prod', async (req, res) => {
+  const newData = req.body;
+  const citiesRef = db.collection('prod');
+    const snapshot = await citiesRef.get();
+  let items=[];
+    snapshot.forEach((doc) => {
+    items.push(doc.data());
+});
+  
+   
+  res.json(items);
+});
+
+///ImageKit
+var ImageKit = require("imagekit");
+var imagekit = new ImageKit({
+    publicKey: process.env.PUBLICKEY,
+    privateKey: process.env.PRIVATEKEY,
+    urlEndpoint: process.env.URLENDPOINT
+});
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+const upload = multer({ storage: multer.memoryStorage() });
+
+app.post('/upload', upload.single('image'), async (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: 'No file uploaded' });
+  }
+  console.log("hi");
+  const imageFile = req.file;
+
+  // Upload image to ImageKit.io
+  imagekit.upload({
+    file: imageFile.buffer.toString('base64'),
+    fileName: imageFile.originalname
+  })
+  .then(response => {
+    const imageUrl = response.url;
+    res.json({ url: imageUrl });
+  })
+  .catch(error => {
+    console.error('Error uploading image to ImageKit:', error);
+    res.status(500).json({ error: 'Failed to upload image to ImageKit' });
+  });
+});
 
 
 const listener = app.listen(process.env.PORT, () => {
