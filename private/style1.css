@@ -4,7 +4,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Roboto', sans-serif;
-    font-size: 25px;
+    font-size: 20px;
 }
 
 :root{
@@ -13,10 +13,26 @@
     --bg-color: white;
 }
 
+.bx-plus
+{
+  font-size:50px;
+
+}
+
 body {
     height: 100vh;
 }
+.wrapper {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    margin-bottom: 20px; /* Adjust as needed */
+    margin-right: 20px; /* Adjust as needed */
+  }
 
+textarea {
+   resize: none;
+}
 
 
 html { 
@@ -46,11 +62,7 @@ h3, h2 {
     padding: 5px;
 }
 
-.container {
-    max-width: 1068px;
-    margin:auto;
-    width:100%;
-}
+
 
 section{
     padding: 6rem 0 3rem;
@@ -108,6 +120,29 @@ header li a::before {
 
 header li a:hover::before {
     width: 100%;
+}
+
+.right .form1{
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 20px;
+    padding-bottom: 20px;
+}
+
+
+
+.form1 h1,
+.form1 input, 
+.form1 select
+{
+    width: 90%;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    border-radius: 20px;
+    margin-top: 10px;
+    border:none;
+    background-color: ;
+    color: black;
 }
 
 .navbar .logo a {
@@ -255,6 +290,16 @@ i{
   align-items:right;
 }
 
+.cart-box-order{
+      border: 2px solid #a64c32;
+    padding:10px;
+    border-radius: 5px;
+    display: grid;
+    grid-template-columns: 50% 20% 2% 30%;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
 
 .cart-box{
       border: 2px solid #a64c32;
@@ -267,9 +312,25 @@ i{
     margin-top: 1rem;
 }
 
+.prod-box{
+  border: 2px solid #a64c32;
+    padding:3px;
+    border-radius: 5px;
+    display: grid;
+    grid-template-columns: 30% 80%;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
 .cart-img{
     width: 100px;
-    height: 100px;
+    height: 100%;
+    object-fit: contain;
+    padding: 10px;
+}
+
+.prod-img{
     object-fit: contain;
     padding: 10px;
 }
@@ -326,7 +387,7 @@ i{
     margin-left:0.5rem;
 }
 
-.btn-buy,.btn-del,.btn-save{
+.btn-buy,.btn-del,.btn-save,.btn-upload,.btn-show{
     display:flex;
     margin: 1.5rem auto 0 auto;
     border-radius: 10px;
@@ -339,11 +400,11 @@ i{
     cursor: pointer;
 }
 
-.btn-custom{
+.btn-custom, .btn-add{
     display:flex;
-    margin: 1.5rem auto 0 auto;
     border-radius: 10px;
-    padding: 12px 20px;
+     margin: 1.5rem auto 0 auto;
+    padding: 12px 12px;
     border: none;
     background: #a64c32;
     color: var(--bg-color);
@@ -365,7 +426,7 @@ i{
     cursor: pointer;
 }
 
-.btn-buy:hover,.btn-today:hover,.btn-custom:hover,btn-del:hover,.btn-save:hover{
+.btn-buy:hover,.btn-today:hover,.btn-custom:hover,.btn-del:hover,.btn-save:hover,.btn-add:hover,.btn-show:hover{
     background: #e08814;
 }
 
@@ -463,9 +524,11 @@ i{
 
 /* admin */
 
-.adminLayout{
+.adminLayout,.adminLayout1{
     display: grid;
     margin-top: 5px;
+    margin-left:5px;
+    margin-right:5px;
     grid-template-columns: repeat(2, 1fr);
     gap: 50px;
     padding: 20px;
@@ -482,64 +545,87 @@ i{
   
 }
 
+.adminLayoutOrderModal{
+    display: grid;
+    margin-top: 5px;
+    margin-bottom: 130px;
+    margin-left:15px;
+    margin-right:15px;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 0px;
+    padding: 20px;
+  
+}
+
 .adminLayout .right{
     background-color: #be7a65;
     border-radius: 20px;
-  height:500px;
+  height:400px;
     padding: 40px;
     color: #fff;
 }
 
-.adminLayoutOrder .right{
+
+.adminLayout1 .right{
     background-color: #be7a65;
     border-radius: 20px;
+  height:650px;
     padding: 40px;
     color: #fff;
 }
 
-.adminLayout .right .form{
+.adminLayoutOrder .right,.adminLayoutOrderModal .right{
+    background-color: #be7a65;
+    border-radius: 20px;
+    padding: 60px;
+    color: #fff;
+}
+
+.adminLayout .right .form,.adminLayout1 .right .form{
     display: grid;
     grid-template-columns: repeat(1, 1fr);
-    gap: 20px;
+    gap: 10px;
     padding-bottom: 20px;
 }
-.adminLayout .form h1,
-.adminLayout .form .group:nth-child(-n+3){
-    grid-column-start: 1;
-    grid-column-end: 3;
+
+.adminLayout .right .form .group,.adminLayout1 .right .form .group{
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 0px;
 }
+
 .adminLayout .form input, 
-.adminLayout .form select
+.adminLayout .form select,
+.adminLayout .form textarea,
+.adminLayout1 .form input, 
+.adminLayout1 .form select,
+.adminLayout1 .form textarea
 {
-    width: 100%;
+  
+    width: 81%;
     padding: 10px 20px;
     box-sizing: border-box;
     border-radius: 20px;
-    margin-top: 10px;
+    margin-top: 1px;
     border:none;
     background-color: ;
     color: black;
 }
-.adminLayout .right .return .row{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 10px;
-}
-.adminLayout .right .return .row div:nth-child(2){
-    font-weight: bold;
-    font-size: 200%;
-}
 
-.order-content{
+
+.order-content, .prod-content{
   height:80%;
   overflow: auto;
 }
 
+
+
 .btnGroup{
   display:grid;
   grid-template-columns: repeat(2, 1fr);
-  margin-top: 50px;
+  gap:10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 /* RESPONSIVE DESIGN  */
@@ -607,7 +693,6 @@ i{
     border: 2px solid #be7a65;
     border-radius: 10px;
 }
-
 
 
 

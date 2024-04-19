@@ -1,3 +1,4 @@
+
 if(document.readyState == "loading"){
     document.addEventListener("DOMContentLoaded",ready);
 }
@@ -12,8 +13,9 @@ function ready(){
 }
 
 
-
-// buy button 
+  ///////////////////////////////////////////////////
+ //          THIS AREA IS FOR MY MEO MEO          //
+/////////////////////////////////////////////////// 
 
 
 async function buyButtonClicked(event)
@@ -21,32 +23,24 @@ async function buyButtonClicked(event)
       let events=[];
       let Name = document.getElementById("name").value;
       let Pass = document.getElementById("pwd").value;
-      let ok=0;
-      await axios.post('/api/users', {Name,Pass})
-      .then(function (response) {
-        ok=response.data;
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      });
-      
-      if(ok==0)
-      {
-           Swal.fire({
-            title: "Sai thông tin",
-            text: "Vui lòng quay lại tên hoặc mật khẩu",
-            icon: "error"
-          });
-        return;
-      }
-      else
-        {
-          localStorage['status'] = true;
-          window.location.href = "/admin.html";
-        }
-
-      
+     
+      fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ Name, Pass })
+        })
+        .then(response => {
+            if (response.ok) {
+                // Redirect to the dashboard page upon successful login
+                window.location.href = '/admin';
+            } else {
+                // Display an error message if login fails
+                alert('Invalid credentials');
+            }
+        })
+        .catch(error => console.error('Error:', error));
 }
 
 

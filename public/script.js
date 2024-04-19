@@ -1,7 +1,4 @@
 
-var Email;
-
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Cart
@@ -29,17 +26,51 @@ else
 
 var total=0;
 // making function
-function ready(){
+
+async function loadProds(){
+  console.log('hi');
+  let prods;
+  await axios.post('/api/show-prod')
+      .then(function (response) {
+       // console.log(response.data);
+        prods=response.data;
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      });
+  console.log(prods);
+  for(let i = 0 ; i < prods.length; i++)
+      addProdBox(prods[i].img, prods[i].name, prods[i].price,prods[i].cap,prods[i].id);
+}
+
+async function addProdBox(img, name, price, cap, id)
+{
+  var cartShopBox = document.createElement("div");
+    cartShopBox.classList.add('product-box');
+    var cartItems = document.getElementsByClassName('shop-content')[0];
+    var cartBoxContent = `
+                            
+              <img src="${img}" alt="" class="product-img">
+                    <h2 class="product-title">${name}</h2>
+                    <span class="price">${price}</span>
+                    <i class="bx bx-shopping-bag add-cart"></i>
+                        `
+        cartShopBox.innerHTML = cartBoxContent;
+        cartItems.append(cartShopBox);
+}
+
+async function ready(){
 
     //reload from local storage
     //localStorage.clear();
-
+    await loadProds();
         loadCartItems();
         updatetotal();
         console.log(total);
       
    localStorage['status'] = false;
-
+  
     // remove Items from cart
     var removeCartButtons = document.getElementsByClassName('cart-remove');
     console.log(total);
@@ -60,6 +91,14 @@ function ready(){
     {
         var button = addCart[i];
         button.addEventListener('click', addCartClicked);
+
+    }
+    
+   var caption = document.getElementsByClassName('cart-item');
+    for(var i =0; i < caption.length; i++)
+    {
+        var cap = caption[i];
+        cap.addEventListener("change", saveCartItems);
 
     }
     console.log(total);
@@ -107,7 +146,14 @@ function addCartClicked(event)
     var price = shopProducts.getElementsByClassName('price')[0].innerText;
     var productImg = shopProducts.getElementsByClassName('product-img')[0].src;
     console.log(title, price, productImg);
-    addProductToCart(title, price,productImg);
+    addProductToCart(title, price,productImg, "");
+    var caption = document.getElementsByClassName('cart-item');
+    for(var i =0; i < caption.length; i++)
+    {
+        var cap = caption[i];
+        cap.addEventListener("change", saveCartItems);
+
+    }
     saveCartItems();
 }
 
@@ -122,12 +168,13 @@ function saveCartItems(){
         var cartItemsPrice = cartBox.getElementsByClassName('cart-price')[0];
         var cartItemsQuantity= cartBox.getElementsByClassName('cart-quantity')[0];
         var cartItemsImg= cartBox.getElementsByClassName('cart-img')[0].src;
-
+        var cartItemsCap= cartBox.getElementsByClassName('cart-item')[0].value;
         var Item = {
             title : cartItemsName.innerText,
             price : cartItemsPrice.innerText,
             quantity : cartItemsQuantity.value,
             img : cartItemsImg,
+            cap : cartItemsCap
         }
         cartItems.push(Item);
         console.log(cartItemsImg);
@@ -146,7 +193,7 @@ function loadCartItems()
         {
             var item = cartItems[i];
             console.log(item.title, item.price,  item.img);
-            addProductToCart(item.title, item.price, item.img);
+            addProductToCart(item.title, item.price, item.img, item.cap);
             var cartBoxes = document.getElementsByClassName('cart-box');
             var cartBox = cartBoxes[cartBoxes.length - 1];
             var quantityElement = cartBox.getElementsByClassName('cart-quantity')[0];
@@ -155,7 +202,7 @@ function loadCartItems()
     }
 }
 
-function addProductToCart(title, price, productImg)
+function addProductToCart(title, price, productImg,cap)
 {
     var cartShopBox = document.createElement("div");
     cartShopBox.classList.add('cart-box');
@@ -174,11 +221,14 @@ function addProductToCart(title, price, productImg)
                                 <div class="cart-product-title">${title}</div>
                                 <div class="cart-price">${price}</div>
                                 <input type="number" value="1" class="cart-quantity">
+                                
                             </div>
                             <!-- remove cart -->
                             <i class="bx bxs-trash-alt cart-remove"></i>
                         `
-        cartShopBox.innerHTML = cartBoxContent;
+    var moree= `<textarea class="cart-item" placeholder ="Chú thích">${cap}</textarea>`
+        cartShopBox.innerHTML = cartBoxContent + moree;
+       // cartShopBox.innerHTML.append(moree);
         cartItems.append(cartShopBox);
         cartShopBox.getElementsByClassName('cart-remove')[0].addEventListener('click',removeCartItem);
         cartShopBox.getElementsByClassName('cart-quantity')[0].addEventListener('change',quantityChanged);
