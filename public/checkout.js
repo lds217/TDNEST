@@ -24,20 +24,21 @@ async function saveData() {
   var cartItems =  localStorage.getItem('cartItems');
   cartItems = JSON.parse(cartItems);
   console.log(cartItems);
-  var uid = number+uuidv4();
   otherCaption = document.getElementById('otherCaption').value;
   console.log(otherCaption);
+  var uid ="";
   if (cartItems) {
        // post firebase
       var status = "Ordered";
-      await axios.post('/api/data' , { Name, number, address, datetime, cartItems, total, uid, otherCaption, status });
       // post calendar
+    let datetimeTemp = datetime;
       let date = new Date(datetime);
       let startDate = date.toISOString();
       datetime = date.getTime() + 30 * 60 * 1000;
       date = new Date(datetime);
       let endDate = date.toISOString();
       console.log(startDate,endDate);
+      datetime =datetimeTemp;
       ///////////////////////////////////////
       await axios.post('/api/add-event' , { Name, number, address, datetime, cartItems, total, uid, startDate,endDate, otherCaption, status });
       ////////////////////////////////////////
@@ -111,7 +112,7 @@ function ready(){
 // buy button 
 
 
-function buyButtonClicked(event)
+async function buyButtonClicked(event)
 {
     Name = document.getElementById("name").value;
     number = document.getElementById("phone").value;
@@ -120,7 +121,18 @@ function buyButtonClicked(event)
     var cool= document.getElementById("cool").value;
     var notcool= document.getElementById("notcool").value;
     updatetotal();
-    //datetime > now + 4 tiếng 
+  const today = new Date(); 
+    const day = new Date(datetime); 
+    if(day - today  > 604800000 || day - today < 7200000 )
+    {
+        Swal.fire({
+            title: "Thời gian không hợp lệ",
+            text: "Vui lòng chọn thời gian trong vòng 2 tiếng đến 7 ngày",
+            icon: "error"
+          });
+        return;
+    }
+  console.log(today-datetime);
     if(total == 0)
     {
         Swal.fire({
@@ -150,11 +162,12 @@ function buyButtonClicked(event)
     var alertMsg = "";
     for(var i = 0; i< cartItemsNames.length;i++)
         alertMsg += cartItemsNames[i].innerText +" " + cartItemsPrices[i].innerText+ " "+ cartItemsQuantity[i].value+"\n";  
+    
+    await saveData();
     while(cartContent.hasChildNodes())
     {
         cartContent.removeChild(cartContent.firstChild);
     }
-    saveData();
     saveCartItems();
 }
 

@@ -347,9 +347,8 @@ i{
     row-gap: 0.5rem;
 }
 
-.cart-product-title{
+.cart-product-title,.cart-product-title1{
     font-size: 1rem;
-    text-transform: uppercase;
   
 }
 
@@ -588,7 +587,7 @@ i{
     padding-bottom: 20px;
 }
 
-.adminLayout .right .form .group,.adminLayout1 .right .form .group{
+.adminLayout .right .form .group,.adminLayout1 .right .form .group,.adminLayoutOrder .right .form1 .group {
     display: grid;
     grid-template-columns: repeat(1, 1fr);
     gap: 0px;

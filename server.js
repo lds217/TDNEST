@@ -38,10 +38,7 @@ const auth = new google.auth.JWT(
 
 ////////////////CREATE EVENT/////////////////////////
 
-// Your TIMEOFFSET Offset
-
-
-
+const cache = require('./routeCache');
 
 // Get date-time string for calender
 function createEvent(event){
@@ -73,10 +70,10 @@ function createEvent(event){
 
 ////////////////////////////////////////////////////////
 ///////Limit rate
-// const rateLimit = require('express-rate-limit');
+const rateLimit = require('express-rate-limit');
 // const limiter = rateLimit({
-//   windowMs: 15 * 60 * 1000, 
-//   max: 10, 
+//   windowMs:  60 * 1000, 
+//   max: 15, 
 //   message: "Too many requests from this IP, please try again later.",
 //   keyGenerator: function(req /*, res */) {
 //     return req.ip; 
@@ -99,9 +96,8 @@ app.use(express.json());
 
 
 app.get('/admin', (req, res) => {
-  // Check if user is logged in
   if (req.session.user) {
-    // Send the admin.html file
+
     res.sendFile(__dirname+ '/admin.html');
   } else {
     res.redirect('/login'); // Redirect to login page if not logged in
@@ -117,7 +113,12 @@ app.get('/checkAuth', (req, res) => {
   }
 });
 
-app.post('/login', async (req, res) => {
+app.get('/login', async (req, res) => {
+  // Authentication logic
+  res.sendFile(__dirname+ '/login.html');
+});
+
+app.post('/logincheck', async (req, res) => {
   // Authentication logic
   const snapshot = await db.collection('users').doc('xLTQL4qFRzfXRuFa52lX');
   const ad = await snapshot.get();
@@ -173,6 +174,7 @@ app.post('/api/add-event', async (req, res) => {
   
   const newData = req.body;
   newData.uid = newData.number + uuidv4() +"l";
+  
   const docRef = await db.collection('data').doc(newData.uid).set(newData);
   let event1 = createEvent(newData);
   test=calendar.events.insert({
@@ -187,13 +189,28 @@ app.post('/api/delete-event', async (req, res) => {
   const newData = req.body;
   console.log(newData);
  await db.collection('data').doc(newData.uid).delete();
+  await calendar.events.delete({
+  auth: auth,
+  calendarId: calendarId,
+  eventId: newData.uid,
+  });
+  res.json(newData);
+});
+
+
+app.post('/api/delete-prod', async (req, res) => {
+  const newData = req.body;
+  
+ await db.collection('prod').doc(newData.id).delete();
+  console.log(newData);
   res.json(newData);
 });
 
 app.post('/api/update-event', async (req, res) => {
   const newData = req.body;
-  const docRef = await db.collection('data').doc(newData.uid).set(newData);
+   await db.collection('data').doc(newData.uid).update(newData);
   let eventId = newData.uid;
+  
   calendar.events.get({
   auth: auth,
   calendarId: calendarId,
@@ -237,11 +254,11 @@ app.post('/api/update-event', async (req, res) => {
   res.json(newData);
 });
 
-app.post('/api/data', async (req, res) => {
-  const newData = req.body;
-  const docRef = await db.collection('data').doc(newData.uid).set(newData);
-  res.json({message: 'Data saved successfully', id: docRef.id});
-});
+// app.post('/api/data', async (req, res) => {
+//   const newData = req.body;
+//   const docRef = await db.collection('data').doc(newData.uid).set(newData);
+//   res.json({message: 'Data saved successfully', id: docRef.id});
+// });
 
 app.post('/api/prod-data', async (req, res) => {
   const newData = req.body;
@@ -254,6 +271,17 @@ app.post('/api/prod-data', async (req, res) => {
   }
    
   res.json("1");
+});
+
+app.get('/api/show-prod-client',cache(300), async (req, res) => {
+  const newData = req.body;
+  const citiesRef = db.collection('prod');
+    const snapshot = await citiesRef.get();
+  let items=[];
+    snapshot.forEach((doc) =>  {
+    items.push(doc.data());
+});
+    res.json(items);
 });
 
 app.post('/api/show-prod', async (req, res) => {
@@ -297,7 +325,7 @@ app.post('/upload', upload.single('image'), async (req, res) => {
     const imageUrl = response.url;
     res.json({ url: imageUrl });
   })
-  .catch(error => {
+  .catch(error =>  {
     console.error('Error uploading image to ImageKit:', error);
     res.status(500).json({ error: 'Failed to upload image to ImageKit' });
   });

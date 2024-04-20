@@ -34,31 +34,30 @@ window.addEventListener('DOMContentLoaded', () => {
     .catch(error => console.error('Error:', error));
 });
 
-window.onbeforeunload = function (e) {
-    e = e || window.event;
-    if (e) {
-        e.returnValue = 'Any string';
-    }
-    return 'Any string';
-};
+// window.onbeforeunload = function (e) {
+//     e = e || window.event;
+//     if (e) {
+//         e.returnValue = 'Any string';
+//     }
+//     return 'Any string';
+// };
 
 function ready(){
-    // checkAuth();
-    var removeCartButtons = document.getElementsByClassName('cart-remove');
-    console.log(total);
-    for(var i =0; i < removeCartButtons.length; i++){
-        var button = removeCartButtons[i];
-        button.addEventListener("click", removeCartItem);
-    }
    document.getElementsByClassName('btn-add')[0].addEventListener('click',addButtonClicked);
     document.getElementsByClassName('btn-custom')[0].addEventListener('click',customButtonClicked);
     document.getElementsByClassName('btn-today')[0].addEventListener('click',todayButtonClicked);
    document.getElementsByClassName('btn-show')[0].addEventListener('click',showButtonClicked);
 }
-
+var prods;
 async function showButtonClicked(event)
 {
-  let prods;
+  prods=[];
+   var orders = document.getElementsByClassName('prod-content')[0];
+     while(orders.hasChildNodes())
+    {
+        orders.removeChild(orders.firstChild);
+    }
+  
   await axios.post('/api/show-prod')
       .then(function (response) {
        // console.log(response.data);
@@ -71,6 +70,13 @@ async function showButtonClicked(event)
   console.log(prods);
   for(let i = 0 ; i < prods.length; i++)
       addProdBox(prods[i].img, prods[i].name, prods[i].price,prods[i].cap,prods[i].id);
+  const buttons = document.querySelectorAll(".prod-edit");
+  buttons.forEach((button, index) => {
+    button.addEventListener("click", () => {
+        editProdItem(index);
+    })
+});
+  
   
 }
 
@@ -84,7 +90,7 @@ function addProdBox(img, name, price, cap, id)
               <img src="${img}" alt="" class="cart-img">
               <div class="detail-box">
                   <div class="cart-product-title">${name}</div>
-                  <div class="cart-product-title">${id}</div>
+                  <div class="cart-product-title1">${id}</div>
                   <div class="cart-price">${price}</div>
                   </div>
             <div> </div>
@@ -95,6 +101,49 @@ function addProdBox(img, name, price, cap, id)
                         `
         cartShopBox.innerHTML = cartBoxContent;
         cartItems.append(cartShopBox);
+  cartShopBox.getElementsByClassName('prod-remove')[0].addEventListener('click',removeProdItem);
+}
+
+async function editProdItem(i)
+{
+    let id = prods[i].id;
+    let prodName =prods[i].name;
+    let price = prods[i].price;
+    let img = prods[i].img;
+    let cap = prods[i].cap;
+    document.getElementById("name1").value = prodName;
+    document.getElementById("price1").value = price;
+    document.getElementById("prod-img").src = img;
+    document.getElementById("cap1").value = cap;
+    document.getElementById("id").value = id;
+}
+
+async function removeProdItem(event)
+{
+  Swal.fire({
+  title: "Bạn có chắc chắn?",
+  text: "Bạn sẽ không thể khôi phục lại mặt hàng",
+  icon: "warning",
+  showCancelButton: true,
+  confirmButtonColor: "#3085d6",
+  cancelButtonColor: "#d33",
+  confirmButtonText: "Có, XÓA đi"
+}).then( async (result) =>  {
+  if (result.isConfirmed) {
+    Swal.fire({
+      title: "Đã xóa!",
+      text: "Đơn của bạn đã bị xóa",
+      icon: "success"
+    });
+     var buttonClicked = event.target;
+    var prodbox = buttonClicked.closest('.cart-box');
+    let id = prodbox.getElementsByClassName("cart-product-title1")[0].innerText;
+    
+     await axios.post('/api/delete-prod', {id});
+    buttonClicked.parentElement.parentElement.remove();
+}});
+   
+    
 }
 
 async function todayButtonClicked(event)
@@ -161,7 +210,6 @@ async function customButtonClicked(event)
     let endDate = document.getElementById("endTime").value;
        await axios.post('/api/add-event-list', {startDate,endDate})
       .then(function (response) {
-       // console.log(response.data);
         events=response.data;
       })
       .catch(function (error) {
@@ -332,7 +380,7 @@ async function deleteOrder(event)
   confirmButtonColor: "#3085d6",
   cancelButtonColor: "#d33",
   confirmButtonText: "Có, XÓA đi"
-}).then((result) =>  {
+}).then( async (result) =>  {
   if (result.isConfirmed) {
     Swal.fire({
       title: "Đã xóa!",
@@ -340,11 +388,8 @@ async function deleteOrder(event)
       icon: "success"
     });
     var uid =events[curOrderIndex].uid
-    axios.post('/api/delete-event', {uid});
-  }
-});
-  /////DELETE
-  var cartContent = document.getElementsByClassName('cart-content')[0];
+    await axios.post('/api/delete-event', {uid});
+     var cartContent = document.getElementsByClassName('cart-content')[0];
    while(cartContent.hasChildNodes())
     {
         cartContent.removeChild(cartContent.firstChild);
@@ -357,6 +402,9 @@ async function deleteOrder(event)
   let orderContent = document.getElementsByClassName('order-content')[0];
   let orderContentToKill = orderContent.childNodes[curOrderIndex];
   orderContent.removeChild(orderContentToKill);
+  }
+});
+ 
 }
 
 
@@ -390,11 +438,13 @@ async function saveOrder()
         }
         cartItems.push(Item);
     }
+    let temdatetime = datetime;
     let date = new Date(datetime);
       let startDate = date.toISOString();
       datetime = date.getTime() + 30 * 60 * 1000;
       date = new Date(datetime);
       let endDate = date.toISOString();
+  datetime= temdatetime;
    await axios.post('/api/update-event' , { Name, number, address, datetime, cartItems, total, uid, startDate,endDate, otherCaption, status });
 }
 
@@ -415,8 +465,6 @@ async function saveOrderClicked(event)
       text: "Đơn của bạn đã lưu",
       icon: "success"
     });
-    var uid =events[curOrderIndex].uid
-    axios.post('/api/delete-event', {uid});
     saveOrder();
   }
 });
@@ -501,12 +549,12 @@ function checkValidId(str)
 
 async function addButtonClicked (event)
 {
-  var name1  = document.getElementById("name").value;
-  var price  = document.getElementById("price").value + "k";
-  var cap  = document.getElementById("cap").value;
+  var name  = document.getElementById("name1").value;
+  var price  = document.getElementById("price1").value;
+  var cap  = document.getElementById("cap1").value;
   var img  = document.getElementById("prod-img").src;
   var id = document.getElementById("id").value;
-  if (!name1 || !price || !cap || !img || !id|| !checkValidId(id))
+  if (!name || !price || !cap || !img || !id|| !checkValidId(id))
     {
        Swal.fire({
             title: "Thông tin trống",
@@ -531,7 +579,7 @@ async function addButtonClicked (event)
       text: "Mặt hàng của bạn đã được tạo",
       icon: "success"
     });
-    axios.post('/api/prod-data', {name1, price, cap, img, id});
+    axios.post('/api/prod-data', {name, price, cap, img, id});
   }
 });
 }
@@ -539,7 +587,6 @@ async function addButtonClicked (event)
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('uploadForm').addEventListener('submit', function(event) {
         event.preventDefault();
-        console.log('ohoh');
         var formData = new FormData();
         var imageFile = document.getElementById('imageInput').files[0];
         formData.append('image', imageFile);
