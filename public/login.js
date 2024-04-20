@@ -24,7 +24,7 @@ async function buyButtonClicked(event)
       let Name = document.getElementById("name").value;
       let Pass = document.getElementById("pwd").value;
      
-      fetch('/login', {
+      fetch('/logincheck', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

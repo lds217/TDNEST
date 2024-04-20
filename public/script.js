@@ -30,7 +30,7 @@ var total=0;
 async function loadProds(){
   console.log('hi');
   let prods;
-  await axios.post('/api/show-prod')
+  await axios.get('/api/show-prod-client')
       .then(function (response) {
        // console.log(response.data);
         prods=response.data;
@@ -53,7 +53,7 @@ async function addProdBox(img, name, price, cap, id)
                             
               <img src="${img}" alt="" class="product-img">
                     <h2 class="product-title">${name}</h2>
-                    <span class="price">${price}</span>
+                    <span class="price">${price}k</span>
                     <i class="bx bx-shopping-bag add-cart"></i>
                         `
         cartShopBox.innerHTML = cartBoxContent;
