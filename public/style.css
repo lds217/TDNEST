@@ -76,7 +76,7 @@ header {
     height:10%;
     background: var(--bg-color);
     box-shadow: 0 1px 4px hsl(0 4% 15%/10%);
-    z-index: 100;
+    z-index: 10;
 }
 
 header li {
@@ -222,6 +222,15 @@ header li a:hover::before {
     padding: 10px;
     cursor: pointer;
 }
+.info-btn{
+    position:absolute;
+    bottom: 0;
+    right: 20%;
+    background: var(--text-color);
+    color:white;
+    padding: 10px;
+    cursor: pointer;
+}
 
 .info{
     font-size: 50%;
@@ -261,9 +270,9 @@ header li a:hover::before {
 .cart-box{
      border :1px solid var(--text-color);
     display: grid;
-    grid-template-columns: 32% 43% 14%;
+    grid-template-columns: 37% 43% 5%;
     align-items: center;
-    gap: 1rem;
+    gap: 0.5rem;
     margin-top: 1rem;
 }
 
@@ -289,7 +298,7 @@ header li a:hover::before {
 }
 
 .checkoutLayout .cart-img{
-    width: 200px;
+    width: 150px;
     height: 200px;
     object-fit: contain;
     padding: 10px;
@@ -590,6 +599,97 @@ header li a:hover::before {
 }
 
 
+
+{box-sizing: border-box;}
+
+/* Button used to open the contact form - fixed at the bottom of the page */
+.open-button {
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  bottom: 23px;
+  right: 28px;
+  width: 280px;
+  z-index:6;
+  
+}
+
+/* Background overlay - hidden by default */
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Dark transparent background */
+  backdrop-filter: blur(5px); /* Apply blur effect */
+  z-index: 100; /* Just below the popup */
+}
+
+/* The popup form - hidden by default */
+.form-popup {
+  display:none;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 101;
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  background-color: white;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+/* Add styles to the form container */
+.form-container {
+  max-width: 300px;
+  min-height: 80%;
+  background-color: white;
+  
+}
+
+.form-popup .right {
+  width:100px;
+  background-color: white;
+}
+
+.context{
+  width:100%;
+  padding:5%;
+  height:100%;
+  overflow: auto;
+}
+
+
+/* Set a style for the submit/login button */
+.btn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom:10px;
+  opacity: 0.8;
+}
+
+/* Add a red background color to the cancel button */
+.cancel {
+  background-color: red;
+}
+
+/* Add some hover effects to buttons */
+.btn:hover, .open-button:hover {
+  opacity: 1;
+}
+
+
+
 /* RESPONSIVE DESIGN  */
 @media(max-width: 1080px) {
     .navbar .links, .navbar .action-button {
@@ -619,7 +719,7 @@ header li a:hover::before {
         height:13%;
         background: var(--bg-color);
         box-shadow: 0 1px 4px hsl(0 4% 15%/10%);
-        z-index: 100;
+        z-index: 50;
     }
     
     .navbar .logo a {
@@ -637,6 +737,28 @@ header li a:hover::before {
   .adminLayout{
     grid-template-columns: repeat(1, 1fr);
   }
+    .form-popup {
+    display:none;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 101;
+    position:fixed;
+    top:30%;
+    left:50%;
+    transform:translate(-50%, -30%);
+    background-color: white;
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .info-btn{
+    position:absolute;
+    bottom: 0;
+    right: 15%;
+    background: var(--text-color);
+    color:white;
+    padding: 10px;
+    cursor: pointer;
+}
 }
 
 

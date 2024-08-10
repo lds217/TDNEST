@@ -568,9 +568,10 @@ i{
 .adminLayout1 .right{
     background-color: #be7a65;
     border-radius: 20px;
-  height:650px;
+  height:100%;
     padding: 40px;
     color: #fff;
+  height: 900px;
 }
 
 .adminLayoutOrder .right,.adminLayoutOrderModal .right{

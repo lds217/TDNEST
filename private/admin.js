@@ -574,12 +574,13 @@ async function addButtonClicked (event)
   confirmButtonText: "Có, tôi đồng ý"
 }).then((result) =>  {
   if (result.isConfirmed) {
+    axios.post('/api/prod-data', {name, price, cap, img, id});
     Swal.fire({
       title: "Đã lưu!",
       text: "Mặt hàng của bạn đã được tạo",
       icon: "success"
     });
-    axios.post('/api/prod-data', {name, price, cap, img, id});
+    
   }
 });
 }
@@ -605,7 +606,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
-
 
 
 
