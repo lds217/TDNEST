@@ -1,8 +1,11 @@
 
 <!DOCTYPE html>
-<html lang="en">
+
+
+          
 
 <head>
+  
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -16,9 +19,32 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>  
     <base target="_blank">
     <title>Thanh Đặng Web</title>
+    
+                   
 </head>
+<div class="overlay"></div>
+<html lang="en">
+  
+ <!-- A button to open the popup form -->
+      
 
+                    <!-- The form -->
+                    <div class="form-popup" id="myForm">
+                      <form action="/action_page.php" class="form-container">
+                        <h1>Sản phẩm</h1>
+                        
+                        <img id="formPic" src="" >
+                        
+                      </form>
+                      <div class="context" id = "context">
+                         
+                        </div>
+                      <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+                    </div>
 <body>
+  
+  
+  
     <header>
         <div class="navbar">
             <div class="logo">
@@ -82,6 +108,7 @@
 
     <main>
         <section class="shop container">
+          
             <h2 class="shop-title">
                 MUA SẮM
             </h2>

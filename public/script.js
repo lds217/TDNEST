@@ -26,10 +26,10 @@ else
 
 var total=0;
 // making function
-
+let prods;
 async function loadProds(){
   console.log('hi');
-  let prods;
+
   await axios.get('/api/show-prod-client')
       .then(function (response) {
        // console.log(response.data);
@@ -41,6 +41,7 @@ async function loadProds(){
       });
   console.log(prods);
   for(let i = 0 ; i < prods.length; i++)
+    if(prods[i].quantity != 0)
       addProdBox(prods[i].img, prods[i].name, prods[i].price,prods[i].cap,prods[i].id);
 }
 
@@ -54,7 +55,10 @@ async function addProdBox(img, name, price, cap, id)
               <img src="${img}" alt="" class="product-img">
                     <h2 class="product-title">${name}</h2>
                     <span class="price">${price}k</span>
+                    
                     <i class="bx bx-shopping-bag add-cart"></i>
+                    <i class='bx bxs-info-square info-btn'></i>
+                   
                         `
         cartShopBox.innerHTML = cartBoxContent;
         cartItems.append(cartShopBox);
@@ -70,6 +74,8 @@ async function ready(){
         console.log(total);
       
    localStorage['status'] = false;
+  
+    
   
     // remove Items from cart
     var removeCartButtons = document.getElementsByClassName('cart-remove');
@@ -87,11 +93,21 @@ async function ready(){
     console.log(total);
     //Add to cart
     var addCart = document.getElementsByClassName('add-cart');
-    for(var i =0; i < addCart.length; i++)
+    for(let i =0; i < addCart.length; i++)
     {
         var button = addCart[i];
-        button.addEventListener('click', addCartClicked);
-
+        button.addEventListener('click', () => {
+            addCartClicked(i);
+        });
+    }
+  
+  var infoBtn = document.getElementsByClassName('info-btn');
+    for(let i =0; i < infoBtn.length; i++)
+    {
+        var button = infoBtn[i];
+        button.addEventListener('click', () => {
+            openInfo(i);
+        });
     }
     
    var caption = document.getElementsByClassName('cart-item');
@@ -106,7 +122,24 @@ async function ready(){
     document.getElementsByClassName('btn-buy')[0].addEventListener('click',buyButtonClicked);
 }
 
+    // form open
+function openInfo(index) {
+  console.log(index);
+  document.getElementById("myForm").style.display = "grid";
+  document.querySelector(".overlay").style.display = "block";
+  console.log(prods[index].cap);
+  if(prods[index].cap)
+    document.getElementById("context").innerText = prods[index].cap;
+  else
+    document.getElementById("context").innerText ="empty";
+  
+  document.getElementById("formPic").src= prods[index].img;
+}
 
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
+  document.querySelector(".overlay").style.display = "none";
+}
 
 // buy button 
 
@@ -122,7 +155,7 @@ function buyButtonClicked(event)
           });
         return;
       }
-    window.location.href = window.location.href+"checkout.html";
+    location.href = "https://tdnests.glitch.me/checkout.html";
     
 }
 //import {Add} from './firestore.js'
@@ -138,13 +171,12 @@ function quantityChanged(event)
     saveCartItems();
 }
 
-function addCartClicked(event)
+function addCartClicked(index)
 {
-    var button = event.target;
-    var shopProducts = button.parentElement;
-    var title = shopProducts.getElementsByClassName('product-title')[0].innerText;
-    var price = shopProducts.getElementsByClassName('price')[0].innerText;
-    var productImg = shopProducts.getElementsByClassName('product-img')[0].src;
+    console.log(index);
+    var title = prods[index].name;
+    var price = prods[index].price;
+    var productImg = prods[index].img;
     console.log(title, price, productImg);
     addProductToCart(title, price,productImg, "");
     var caption = document.getElementsByClassName('cart-item');
@@ -243,6 +275,7 @@ function removeCartItem(event)
     saveCartItems();
 
 }
+
 
 //update total
 function updatetotal()

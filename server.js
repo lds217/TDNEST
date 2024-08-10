@@ -71,16 +71,15 @@ function createEvent(event){
 ////////////////////////////////////////////////////////
 ///////Limit rate
 const rateLimit = require('express-rate-limit');
-// const limiter = rateLimit({
-//   windowMs:  60 * 1000, 
-//   max: 15, 
-//   message: "Too many requests from this IP, please try again later.",
-//   keyGenerator: function(req /*, res */) {
-//     return req.ip; 
-//   }
-// });
+const limiter = rateLimit({
+  windowMs:  60 * 1000, 
+  max: 100, 
+  message: "Too many requests from this IP, please try again later.",
+  keyGenerator: function(req /*, res */) {
+    return req.ip; 
+  }
+});
 
-// app.use(limiter);
 
 app.use(session({
   secret: process.env.SECRETKEY,
@@ -118,7 +117,7 @@ app.get('/login', async (req, res) => {
   res.sendFile(__dirname+ '/login.html');
 });
 
-app.post('/logincheck', async (req, res) => {
+app.post('/logincheck',limiter, async (req, res) => {
   // Authentication logic
   const snapshot = await db.collection('users').doc('xLTQL4qFRzfXRuFa52lX');
   const ad = await snapshot.get();
@@ -146,7 +145,7 @@ app.post('/logincheck', async (req, res) => {
 
 
 
-app.post('/api/add-event-list', async (req, res) => {
+app.post('/api/add-event-list',limiter, async (req, res) => {
   
   let event=req.body;
   let start=event.startDate;
@@ -170,7 +169,7 @@ function uuidv4() {
   );
 }
 
-app.post('/api/add-event', async (req, res) => {
+app.post('/api/add-event',limiter, async (req, res) => {
   
   const newData = req.body;
   newData.uid = newData.number + uuidv4() +"l";
@@ -206,7 +205,7 @@ app.post('/api/delete-prod', async (req, res) => {
   res.json(newData);
 });
 
-app.post('/api/update-event', async (req, res) => {
+app.post('/api/update-event',limiter, async (req, res) => {
   const newData = req.body;
    await db.collection('data').doc(newData.uid).update(newData);
   let eventId = newData.uid;
@@ -273,7 +272,7 @@ app.post('/api/prod-data', async (req, res) => {
   res.json("1");
 });
 
-app.get('/api/show-prod-client',cache(300), async (req, res) => {
+app.get('/api/show-prod-client',limiter, cache(10), async (req, res) => {
   const newData = req.body;
   const citiesRef = db.collection('prod');
     const snapshot = await citiesRef.get();
